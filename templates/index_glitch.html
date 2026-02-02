@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM // ARCHIVE</title>
+    <style>
+        body {
+            background-color: #0000ff;
+            color: #ffff00;
+            font-family: 'Impact', sans-serif;
+            margin: 0;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-size: 15vw;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+            mix-blend-mode: difference;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-5deg);
+            z-index: 0;
+            opacity: 0.2;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 50px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding-bottom: 100px;
+        }
+        .card {
+            background: #ff00ff;
+            border: 5px solid #000;
+            padding: 20px;
+            box-shadow: 10px 10px 0px #000;
+            transition: transform 0.1s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 15px 15px 0px #000;
+            background: #00ff00;
+            color: #000;
+        }
+        .series {
+            background: #000;
+            color: #fff;
+            font-family: monospace;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 1.5rem;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .meta {
+            font-family: monospace;
+            font-size: 0.9rem;
+            border-top: 2px solid #000;
+            padding-top: 10px;
+        }
+        .marquee {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: black;
+            color: white;
+            font-family: monospace;
+            padding: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <h1>NOTHING<br>IS HOLY</h1>
+    
+    <div class="container">
+        {% for show in shows %}
+        <a href="shows/{{ show.id }}.html" class="card">
+            <span class="series">{{ show.series }}</span>
+            <div class="title">{{ show.title }}</div>
+            <div class="meta">
+                {{ show.date }}
+                {% if show.guest %} // {{ show.guest }}{% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="marquee">
+        /// KLOOM LO KADOSH RADIO ARCHIVE /// THE SIGNAL IS THE MESSAGE /// NO GODS NO MASTERS ///
+    </div>
+</body>
+</html>

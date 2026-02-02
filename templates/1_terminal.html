@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM RADIO // TERMINAL</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #00ff41;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+        }
+        h1 {
+            border-bottom: 2px solid #00ff41;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .status-bar {
+            margin-bottom: 20px;
+            font-size: 0.8em;
+        }
+        .blink {
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+        .player-wrapper {
+            margin-bottom: 30px;
+            border: 1px dashed #00ff41;
+            padding: 10px;
+        }
+        iframe {
+            border: none;
+            filter: grayscale(100%) contrast(1.2) sepia(100%) hue-rotate(50deg) saturate(300%);
+        }
+        .local-audio {
+            margin-bottom: 30px;
+        }
+        audio {
+            width: 100%;
+            filter: invert(1) hue-rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-bar">
+            SYSTEM_STATUS: ONLINE<br>
+            SIGNAL_STRENGTH: 100%<br>
+            USER: GUEST<span class="blink">_</span>
+        </div>
+        
+        <h1>> KLOOM_LO_KADOSH_RADIO</h1>
+        
+        <div class="local-audio">
+            <p>> ACCESSING_FILE: bots_religion.m4a</p>
+            <audio controls>
+                <source src="../bots-religion.m4a" type="audio/mp4">
+            </audio>
+        </div>
+
+        <p>> STREAM_LISTING_INIT:</p>
+
+        <div class="player-wrapper">
+            <p>> SRC: mixcloud_stream_01</p>
+            <iframe width="100%" height="120" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fradioart106%2Fradioart106_167_land-devours-inhabitants-by-yaniv-schonfeld%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;" ></iframe>
+        </div>
+
+        <div class="player-wrapper">
+            <p>> SRC: mixcloud_stream_02</p>
+            <iframe width="100%" height="120" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20251202-141411%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;" ></iframe>
+        </div>
+
+        <div class="player-wrapper">
+            <p>> SRC: mixcloud_stream_03</p>
+            <iframe width="100%" height="120" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240212-162651%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;" ></iframe>
+        </div>
+        
+        <p>> END_OF_TRANSMISSION</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM LO KADOSH // ARCHIVE</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="Kloom Lo Kadosh Radio Archive. Experimental sound, noise, and conversations hosted by Yaniv Schonfeld and friends.">
+    <meta name="keywords" content="radio, experimental, noise, drone, glitch, israel, podcast">
+    
+    <!-- OpenGraph -->
+    <meta property="og:title" content="Kloom Lo Kadosh Archive">
+    <meta property="og:description" content="The signal is the message. No gods, no masters.">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --bg: #0000ff; /* Blue Screen of Death Blue */
+            --fg: #ffff00; /* Yellow Text */
+            --accent: #ff00ff; /* Magenta */
+            --highlight: #00ff00; /* Green */
+            --border-color: #000;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: 'Impact', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        /* Glitch Title */
+        .site-header {
+            padding: 40px 20px;
+            border-bottom: 5px solid var(--border-color);
+            text-align: center;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 8vw;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--fg);
+            text-shadow: 4px 4px 0px #000;
+            transform: rotate(-2deg);
+            mix-blend-mode: normal;
+        }
+
+        .subtitle {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            background: #000;
+            display: inline-block;
+            padding: 5px 10px;
+            transform: rotate(2deg);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Filter/Search Bar (Visual Only for now) */
+        .controls {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #000;
+            padding-bottom: 10px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 1.5rem;
+            color: var(--fg);
+            background: #000;
+            display: inline-block;
+            padding: 5px 15px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            border: 3px solid var(--fg);
+            box-shadow: 5px 5px 0px #000;
+            transform: skew(-2deg);
+        }
+
+        /* List Items */
+        .show-item {
+            display: flex;
+            flex-wrap: wrap; /* IMPORTANT: Allows wrapping */
+            background: #ff00ff;
+            border: 5px solid #000;
+            margin-bottom: 30px;
+            transition: all 0.1s ease;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+            transform: skew(-1deg);
+            box-shadow: 10px 10px 0px #000;
+        }
+
+        .show-item.active-card {
+            background: #00ff00;
+            transform: skew(-1deg) translate(-5px, -5px);
+            box-shadow: 15px 15px 0px #000;
+            z-index: 20;
+        }
+
+        .show-item:hover {
+            transform: skew(-1deg) translate(-5px, -5px);
+            box-shadow: 15px 15px 0px #000;
+            z-index: 10;
+        }
+
+        /* Top Section: Thumb + Content + Action */
+        .card-top {
+            display: flex;
+            width: 100%;
+        }
+
+        .thumb {
+            width: 150px;
+            min-height: 150px;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: #000;
+            border-right: 5px solid #000;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+            transition: filter 0.1s;
+        }
+
+        .show-item:hover .thumb img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .meta-top {
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 2px 6px;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: normal;
+            margin-bottom: 5px;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .desc {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            color: #000;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: bold;
+        }
+
+        .tags {
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        .tags span {
+            background: #fff;
+            color: #000;
+            padding: 2px 6px;
+            margin-right: 5px;
+            border: 2px solid #000;
+        }
+
+        .action {
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 5px solid #000;
+            font-size: 3rem;
+            color: #000;
+            background: rgba(0,0,0,0.1);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .show-item:hover .action {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Player Container: Full width below content when active */
+        .player-container {
+            width: 100%;
+            margin-top: 0;
+            flex-basis: 100%;
+            border-top: 5px solid #000;
+            display: none; /* Hidden by default */
+            background: #000;
+            padding: 0;
+        }
+
+        .show-item.active-card .player-container {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 40px;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .card-top {
+                flex-direction: column;
+            }
+            .thumb {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 5px solid #000;
+            }
+            .action {
+                display: none; /* Hide play button on mobile, rely on page link? Or move it */
+            }
+            /* Make entire card clickable for page on mobile? or add mobile play button */
+        }
+    </style>
+    <script>
+        function togglePlay(id, type, url) {
+            const card = document.getElementById('card-' + id);
+            const playerContainer = document.getElementById('player-' + id);
+            const playBtn = card.querySelector('.action');
+            
+            // Close others
+            document.querySelectorAll('.player-container').forEach(el => {
+                if (el.id !== 'player-' + id) {
+                    el.innerHTML = '';
+                    el.parentElement.classList.remove('active-card');
+                    // Reset button icon for others
+                    const otherBtn = el.parentElement.querySelector('.action');
+                    if (otherBtn) otherBtn.innerHTML = "▶";
+                }
+            });
+
+            if (playerContainer.innerHTML.trim() !== "") {
+                // Toggle Off
+                playerContainer.innerHTML = "";
+                playBtn.innerHTML = "▶";
+                card.classList.remove('active-card');
+            } else {
+                // Toggle On
+                playBtn.innerHTML = "▼";
+                card.classList.add('active-card');
+                
+                let playerHTML = "";
+                if (type === 'local_audio') {
+                    playerHTML = `<audio controls autoplay style="width: 100%; filter: invert(1); border: none;"><source src="${url}" type="audio/mp4"></audio>`;
+                } else {
+                    playerHTML = `<iframe width="100%" height="120" src="${url}&autoplay=1" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>`;
+                }
+                playerContainer.innerHTML = playerHTML;
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <header class="site-header">
+        <h1>NOTHING IS HOLY</h1>
+        <div class="subtitle">KLOOM LO KADOSH RADIO ARCHIVE</div>
+    </header>
+
+    <div class="container">
+        
+        <div class="controls">
+            <span>// ARCHIVE_INDEX</span>
+            <span>TOTAL_SHOWS: 15</span>
+        </div>
+
+        <!-- Section: KLOOM ORIGINALS / GUESTS -->
+        
+        
+        <div class="section-header">// KLOOM ORIGINALS & GUESTS</div>
+        <div class="show-list">
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-bots-religion">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/bots-religion.html" class="thumb">
+                        
+                        <div style="width:100%;height:100%;background:black;display:flex;align-items:center;justify-content:center;color:#333;">NO_IMG</div>
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/bots-religion.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Kloom Lo Kadosh // 2026-02-02</div>
+                            <div class="title">הבוטים הקימו דת ברשת החברתית הסודית</div>
+                            
+                            <div class="desc">An AI-generated exploration of bots creating their own theology.</div>
+                            
+                            <div class="tags">
+                                <span>#AI</span><span>#Hebrew</span><span>#Experimental</span><span>#Religion</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('bots-religion', 'local_audio', '../bots-religion.m4a')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-bots-religion" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-land-devours-inhabitants">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/land-devours-inhabitants.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/0/2/4/b17a-1c2a-419a-9327-154f161ddd2c" alt="Land Devours Inhabitants">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/land-devours-inhabitants.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Radio Art 106 // 2024-01-01</div>
+                            <div class="title">Land Devours Inhabitants</div>
+                            
+                            <div class="desc">War texts and music. Opens a window into Yaniv Schonfeld's thoughts and experiences during this period, through the medium of spoken journal entries.</div>
+                            
+                            <div class="tags">
+                                <span>#Radio Art</span><span>#War</span><span>#Experimental</span><span>#Spoken Word</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('land-devours-inhabitants', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fradioart106%2Fradioart106_167_land-devours-inhabitants-by-yaniv-schonfeld%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-land-devours-inhabitants" class="player-container"></div>
+            </div>
+            
+        </div>
+        
+
+        <!-- Section: ARCHIVE / MIXTAPES (Nothing Is Holy) -->
+        
+        
+        <div class="section-header" style="margin-top: 60px;">// ARCHIVE: NOTHING IS HOLY</div>
+        <div class="show-list">
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-creative-destruction-2025-12-02">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/creative-destruction-2025-12-02.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/f/0/7/f/17d5-f5ff-45ee-b457-0e2fedcee197" alt="The Creative Destruction Show">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/creative-destruction-2025-12-02.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2025-12-02</div>
+                            <div class="title">The Creative Destruction Show</div>
+                            
+                            <div class="desc">Hosted with Shiri Anat Shifman. A deep dive into skaters, punks, and the local Israeli music scene.</div>
+                            
+                            <div class="tags">
+                                <span>#Live</span><span>#Creative Destruction</span><span>#Skate Culture</span><span>#Punk</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('creative-destruction-2025-12-02', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20251202-141411%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-creative-destruction-2025-12-02" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2024-05-27">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2024-05-27.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/c/8/1/d5fe-2349-4441-8b53-ee7cc303fa7f" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2024-05-27.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2024-05-27</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">Live broadcast archive.</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span><span>#Eclectic</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2024-05-27', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240527-190002%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2024-05-27" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2024-02-12">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2024-02-12.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/4/e/6/6/963c-bf0f-4267-9d4f-f9eaa204aba0" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2024-02-12.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2024-02-12</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">Sleepy time armadillo angel is here to shave you.
+Whats my age again?</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2024-02-12', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240212-162651%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2024-02-12" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2023-12-16">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2023-12-16.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/4/2/0/3/a22f-5592-409f-9f76-eca815506e52" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2023-12-16.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2023-12-16</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">Sleepy time armadillo angel is here to shave you.
+Beautifully sad songs for the wickedly sleepy demons.
+Nothing is holly.</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span><span>#Winter</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2023-12-16', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231216-195620%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2023-12-16" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2023-11-29">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2023-11-29.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/d/f/f/c/7124-5a17-4ca7-9d05-b3513ebf0785" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2023-11-29.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2023-11-29</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">The one with the hip hop.</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span><span>#Hip Hop</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2023-11-29', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231129-193434%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2023-11-29" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2023-11-15">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2023-11-15.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/8/3/f/1/2d20-2323-44a4-a7a9-56baf30904f3" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2023-11-15.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2023-11-15</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">Here I am sad because there is a war going on and music gives me some peace of mind.</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span><span>#War</span><span>#Melancholy</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2023-11-15', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231115-180003%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2023-11-15" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2023-11-01">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2023-11-01.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/0/2/d/02db-925b-4fc6-a9d9-bed653f10945" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2023-11-01.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2023-11-01</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">My history with grunge and music in general - mostly punk, grunge, and stoner.</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span><span>#Grunge</span><span>#Punk</span><span>#Stoner</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2023-11-01', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231101-132641%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2023-11-01" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-no-sleep-2023-10-27">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/no-sleep-2023-10-27.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/profile/d/9/0/6/7db7-329b-40e9-b239-55b543808a3d" alt="No Sleep For The Wicked">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/no-sleep-2023-10-27.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Nothing Is Holy // 2023-10-27</div>
+                            <div class="title">No Sleep For The Wicked</div>
+                            
+                            <div class="desc">Sleepy time armadillo angel is here to shave you.</div>
+                            
+                            <div class="tags">
+                                <span>#Mixtape</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('no-sleep-2023-10-27', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231027-175932%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-no-sleep-2023-10-27" class="player-container"></div>
+            </div>
+            
+        </div>
+        
+
+        <!-- Section: VISUAL VOICE (Kol Hazuti) -->
+        
+        
+        <div class="section-header" style="margin-top: 60px;">// ARCHIVE: VISUAL VOICE (KOL HAZUTI)</div>
+        <div class="show-list">
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-kol-hazuti-breakup">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/kol-hazuti-breakup.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/6/0/0/6/80fd-46f6-4548-9bf6-41239f68278d" alt="Breakup">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/kol-hazuti-breakup.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Kol Hazuti // 2010-08-12</div>
+                            <div class="title">Breakup</div>
+                            
+                            <div class="desc">קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית שהתחילה בנושא פרידות והמשיכה לכיוונים שונים.. עורכת ומגישה: נעה אלרן.</div>
+                            
+                            <div class="tags">
+                                <span>#Archive</span><span>#Interview</span><span>#Hebrew</span><span>#Personal</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('kol-hazuti-breakup', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F12-8-10_yaniv_schonfeld_breakup%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-kol-hazuti-breakup" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-kol-hazuti-forbidden">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/kol-hazuti-forbidden.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/d/6/b/1f1b-41e9-4dd8-9f16-29dd540cbb2c" alt="Things That Should Not Be Played On The Radio">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/kol-hazuti-forbidden.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Kol Hazuti // 2010-06-10</div>
+                            <div class="title">Things That Should Not Be Played On The Radio</div>
+                            
+                            <div class="desc">רדיו קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית שכולה דברים שאסור להשמיע ברדיו. עורכת ומגישה: נעה אלרן.</div>
+                            
+                            <div class="tags">
+                                <span>#Archive</span><span>#Interview</span><span>#Hebrew</span><span>#Censorship</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('kol-hazuti-forbidden', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F10610_yaniv_schonfeld_things_that_should_not_be_played_on_the_radio%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-kol-hazuti-forbidden" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-kol-hazuti-god">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/kol-hazuti-god.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/2/8/7/b/f43b-7b00-49f5-b60b-1828f57c4eb9" alt="God">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/kol-hazuti-god.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Kol Hazuti // 2010-04-15</div>
+                            <div class="title">God</div>
+                            
+                            <div class="desc">רדיו קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית על אלוהים. עורכת ומגישה: נעה אלרן</div>
+                            
+                            <div class="tags">
+                                <span>#Archive</span><span>#Interview</span><span>#Hebrew</span><span>#Theology</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('kol-hazuti-god', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F15410_yaniv_schonfeld_god%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-kol-hazuti-god" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-kol-hazuti-love">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/kol-hazuti-love.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/8/7/a/0/ee82-04c1-4196-9cf1-fd5fde51962b" alt="Visual Voice: Love">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/kol-hazuti-love.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Kol Hazuti // 2010-01-01</div>
+                            <div class="title">Visual Voice: Love</div>
+                            
+                            <div class="desc">קול חזותי הפרעות בשידור. יניב שיינפלד מתארח בתוכנית בנושא אהבה. מגישה ועורכת: נעה אלרן</div>
+                            
+                            <div class="tags">
+                                <span>#Archive</span><span>#Interview</span><span>#Hebrew</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('kol-hazuti-love', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2Fvisual-voice_yaniv_schonfeld_love%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-kol-hazuti-love" class="player-container"></div>
+            </div>
+            
+                            <!-- Card Wrapper -->
+            <div class="show-item" id="card-kol-hazuti-tech-music">
+                
+                <!-- Top Row: Thumb, Content, Button -->
+                <div class="card-top">
+                    <a href="shows/kol-hazuti-tech-music.html" class="thumb">
+                        
+                        <img src="https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/6/8/2/0/1853-d3b3-46fc-a36a-4ced915cbb09" alt="Technology and Music">
+                        
+                    </a>
+                    
+                    <div class="content">
+                        <a href="shows/kol-hazuti-tech-music.html" style="text-decoration:none; color:inherit;">
+                            <div class="meta-top">Kol Hazuti // 2009-12-24</div>
+                            <div class="title">Technology and Music</div>
+                            
+                            <div class="desc">An early discussion on the intersection of sound and machine.</div>
+                            
+                            <div class="tags">
+                                <span>#Archive</span><span>#Interview</span><span>#Hebrew</span><span>#Philosophy</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Play Trigger -->
+                    <div class="action" onclick="togglePlay('kol-hazuti-tech-music', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F24-12-09_yaniv_schonfeld_technology_and_music%2F')">
+                        ▶
+                    </div>
+                </div>
+
+                <!-- Inline Player Container (Full Width Bottom) -->
+                <div id="player-kol-hazuti-tech-music" class="player-container"></div>
+            </div>
+            
+        </div>
+        
+
+    </div>
+
+    <footer class="footer">
+        GENERATED: 2026-02-02 22:44:27<br>
+        SYSTEM STATUS: ONLINE<br>
+        HOSTED ON MEZO INFRASTRUCTURE
+    </footer>
+
+</body>
+</html>

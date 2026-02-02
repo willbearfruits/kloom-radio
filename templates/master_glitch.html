@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM // {{ title }}</title>
+    <style>
+        body {
+            background-color: #0000ff; /* Blue Screen of Death Blue */
+            color: #ffff00;
+            font-family: 'Impact', sans-serif;
+            margin: 0;
+            padding: 10px;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 8vw;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+            mix-blend-mode: difference;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+            transform: rotate(-5deg);
+            white-space: nowrap;
+        }
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .nav a {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-weight: bold;
+            border: 2px solid #fff;
+        }
+        .nav a:hover {
+            background: #fff;
+            color: #000;
+        }
+        .container {
+            margin-top: 15vh;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 100px;
+        }
+        .box {
+            background: #ff00ff;
+            border: 5px solid #000;
+            padding: 30px;
+            box-shadow: 15px 15px 0px #000;
+            transform: skew(-2deg);
+        }
+        .box-header {
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            margin-top: -55px;
+            margin-bottom: 20px;
+            transform: skew(2deg);
+        }
+        .show-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #000;
+            text-shadow: 2px 2px 0px #fff;
+        }
+        .metadata {
+            font-family: monospace;
+            background: #ffff00;
+            color: #000;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #000;
+            display: inline-block;
+        }
+        .tags span {
+            background: #000;
+            color: #fff;
+            padding: 2px 5px;
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        iframe {
+            border: 5px solid black;
+            background: #000;
+        }
+        .description {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            margin-top: 20px;
+            border: 2px dashed #00ff00;
+        }
+        .footer {
+            text-align: center;
+            font-family: monospace;
+            margin-top: 50px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>NOTHING<br>IS HOLY</h1>
+
+    <div class="nav">
+        <a href="../index.html">/// BACK_TO_ARCHIVE</a>
+    </div>
+    
+    <div class="container">
+        <div class="box">
+            <div class="box-header">// {{ series }} // {{ id }}</div>
+            
+            <div class="show-title">{{ title }}</div>
+            
+            <div class="metadata">
+                DATE: {{ date }}<br>
+                {% if host %}HOST: {{ host }}<br>{% endif %}
+                {% if guest %}GUEST: {{ guest }}<br>{% endif %}
+                {% if genres %}
+                <div style="margin-top: 5px;">
+                    GENRES: {{ genres|join(', ') }}
+                </div>
+                {% endif %}
+                <div class="tags" style="margin-top: 10px;">
+                    {% for tag in tags %}<span>#{{ tag }}</span>{% endfor %}
+                </div>
+            </div>
+
+            {% if type == 'local_audio' %}
+            <audio controls style="width: 100%; filter: invert(1); border: 5px solid black;">
+                <source src="{{ src }}" type="audio/mp4">
+            </audio>
+            {% else %}
+            <iframe width="100%" height="120" src="{{ embed_url }}" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
+            {% endif %}
+
+            {% if description %}
+            <div class="description">
+                {{ description }}
+            </div>
+            {% endif %}
+            
+            {% if playlist %}
+            <div class="description" style="margin-top: 30px; border-color: #ffff00; color: #fff;">
+                <div style="background: #ffff00; color: #000; display: inline-block; padding: 2px 5px; margin-bottom: 10px; font-weight: bold;">// PLAYLIST</div>
+                <pre style="white-space: pre-wrap; margin: 0;">{{ playlist }}</pre>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="footer">
+        KLOOM LO KADOSH RADIO ARCHIVE // GENERATED {{ generated_at }}
+    </div>
+</body>
+</html>
