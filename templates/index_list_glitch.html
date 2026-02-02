@@ -24,6 +24,9 @@
     <meta property="twitter:description" content="The signal is the message. No gods, no masters. Listen to the archive.">
     <meta property="twitter:image" content="https://thumbnailer.mixcloud.com/unsafe/600x600/profile/d/9/0/6/7db7-329b-40e9-b239-55b543808a3d">
 
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://thumbnailer.mixcloud.com https://i.ytimg.com data:; frame-src https://player-widget.mixcloud.com https://www.youtube.com; media-src 'self' blob:; connect-src 'self' https://api.mixcloud.com;">
+
     <style>
         :root {
             --bg: #0000ff; /* Blue Screen of Death Blue */
@@ -261,6 +264,29 @@
             margin-top: 40px;
         }
 
+        /* Accessibility - Focus Indicators */
+        .action:focus,
+        .thumb:focus,
+        a:focus {
+            outline: 5px solid #00ff00;
+            outline-offset: 3px;
+        }
+
+        .action:focus:not(:focus-visible),
+        .thumb:focus:not(:focus-visible),
+        a:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         /* Mobile */
         @media (max-width: 600px) {
             .card-top {
@@ -318,43 +344,85 @@
             // Change Title
             document.querySelector('h1').innerText = "GOD MODE ACTIVE";
             document.querySelector('h1').style.color = "#ffff00";
-            
-            console.log("DEGREELESSNESS MODE ON");
         }
 
         function togglePlay(id, type, url) {
             const card = document.getElementById('card-' + id);
             const playerContainer = document.getElementById('player-' + id);
             const playBtn = card.querySelector('.action');
-            
+
             // Close others
             document.querySelectorAll('.player-container').forEach(el => {
                 if (el.id !== 'player-' + id) {
-                    el.innerHTML = '';
+                    el.textContent = '';
                     el.parentElement.classList.remove('active-card');
                     // Reset button icon for others
                     const otherBtn = el.parentElement.querySelector('.action');
-                    if (otherBtn) otherBtn.innerHTML = "▶";
+                    if (otherBtn) otherBtn.textContent = "▶";
                 }
             });
 
-            if (playerContainer.innerHTML.trim() !== "") {
+            if (playerContainer.children.length > 0) {
                 // Toggle Off
-                playerContainer.innerHTML = "";
-                playBtn.innerHTML = "▶";
+                playerContainer.textContent = "";
+                playBtn.textContent = "▶";
                 card.classList.remove('active-card');
             } else {
                 // Toggle On
-                playBtn.innerHTML = "▼";
+                playBtn.textContent = "▼";
                 card.classList.add('active-card');
-                
-                let playerHTML = "";
+
+                // CREATE DOM ELEMENTS SAFELY instead of innerHTML
                 if (type === 'local_audio') {
-                    playerHTML = `<audio controls autoplay style="width: 100%; filter: invert(1); border: none;"><source src="${url}" type="audio/mp4"></audio>`;
+                    const audio = document.createElement('audio');
+                    audio.controls = true;
+                    audio.autoplay = true;
+                    audio.style.cssText = 'width: 100%; filter: invert(1); border: none;';
+
+                    const source = document.createElement('source');
+                    source.src = url; // Browser automatically escapes this
+                    source.type = 'audio/mp4';
+
+                    audio.appendChild(source);
+                    playerContainer.appendChild(audio);
+                } else if (type === 'youtube') {
+                    // YouTube embed
+                    try {
+                        const urlObj = new URL(url);
+                        if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
+                            const iframe = document.createElement('iframe');
+                            iframe.width = '100%';
+                            iframe.height = '315';
+                            iframe.src = url + '?autoplay=1';
+                            iframe.frameBorder = '0';
+                            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                            iframe.allowFullscreen = true;
+                            playerContainer.appendChild(iframe);
+                        } else {
+                            console.error('Invalid YouTube URL hostname:', urlObj.hostname);
+                        }
+                    } catch (e) {
+                        console.error('Invalid YouTube URL:', url, e);
+                    }
                 } else {
-                    playerHTML = `<iframe width="100%" height="120" src="${url}&autoplay=1" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>`;
+                    // Mixcloud embed
+                    try {
+                        const urlObj = new URL(url);
+                        if (urlObj.hostname === 'player-widget.mixcloud.com') {
+                            const iframe = document.createElement('iframe');
+                            iframe.width = '100%';
+                            iframe.height = '120';
+                            iframe.src = url + '&autoplay=1';
+                            iframe.frameBorder = '0';
+                            iframe.allow = 'encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;';
+                            playerContainer.appendChild(iframe);
+                        } else {
+                            console.error('Invalid embed URL hostname:', urlObj.hostname);
+                        }
+                    } catch (e) {
+                        console.error('Invalid embed URL:', url, e);
+                    }
                 }
-                playerContainer.innerHTML = playerHTML;
             }
         }
     </script>

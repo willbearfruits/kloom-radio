@@ -1,20 +1,20 @@
             <!-- Card Wrapper -->
-            <div class="show-item" id="card-{{ show.id }}">
-                
+            <div class="show-item" id="card-{{ show.id }}" role="article" aria-labelledby="title-{{ show.id }}">
+
                 <!-- Top Row: Thumb, Content, Button -->
                 <div class="card-top">
-                    <a href="shows/{{ show.id }}.html" class="thumb">
+                    <a href="shows/{{ show.id }}.html" class="thumb" aria-label="View full page for {{ show.title }}">
                         {% if show.image_url %}
-                        <img src="{{ show.image_url }}" alt="{{ show.title }}">
+                        <img src="{{ show.image_url }}" alt="{{ show.title }}" loading="lazy" decoding="async">
                         {% else %}
-                        <div style="width:100%;height:100%;background:black;display:flex;align-items:center;justify-content:center;color:#333;">NO_IMG</div>
+                        <div style="width:100%;height:100%;background:black;display:flex;align-items:center;justify-content:center;color:#333;" role="img" aria-label="No image available">NO_IMG</div>
                         {% endif %}
                     </a>
-                    
+
                     <div class="content">
                         <a href="shows/{{ show.id }}.html" style="text-decoration:none; color:inherit;">
-                            <div class="meta-top">{{ show.series }} // {{ show.date }}</div>
-                            <div class="title">{{ show.title }}</div>
+                            <div class="meta-top" aria-label="Show metadata">{{ show.series }} // {{ show.date }}</div>
+                            <div class="title" id="title-{{ show.id }}">{{ show.title }}</div>
                             {% if show.description %}
                             <div class="desc">{{ show.description }}</div>
                             {% endif %}
@@ -25,11 +25,17 @@
                     </div>
 
                     <!-- Play Trigger -->
-                    <div class="action" onclick="togglePlay('{{ show.id }}', '{{ show.type }}', '{% if show.type == 'local_audio' %}{{ show.src }}{% else %}{{ show.embed_url }}{% endif %}')">
+                    <div class="action"
+                         role="button"
+                         tabindex="0"
+                         aria-label="Play {{ show.title }}"
+                         aria-pressed="false"
+                         onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
+                         onclick="togglePlay('{{ show.id }}', '{{ show.type }}', '{% if show.type == 'local_audio' %}{{ show.src }}{% else %}{{ show.embed_url }}{% endif %}')">
                         ▶
                     </div>
                 </div>
 
                 <!-- Inline Player Container (Full Width Bottom) -->
-                <div id="player-{{ show.id }}" class="player-container"></div>
+                <div id="player-{{ show.id }}" class="player-container" role="region" aria-label="Audio player" aria-live="polite"></div>
             </div>

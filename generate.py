@@ -1,23 +1,42 @@
 import json
 import os
+import sys
 import datetime
 import urllib.request
+from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from urllib.parse import urlparse, parse_qs, unquote
 
-# Config
-DATA_FILE = '/home/glitches/clawd/kloom-radio/data/shows.json'
-TEMPLATE_DIR = '/home/glitches/clawd/kloom-radio/templates'
-OUTPUT_DIR = '/home/glitches/clawd/kloom-radio'
-SHOWS_DIR = os.path.join(OUTPUT_DIR, 'shows')
+# Config - Use relative paths
+BASE_DIR = Path(__file__).resolve().parent
+DATA_FILE = BASE_DIR / 'data' / 'shows.json'
+TEMPLATE_DIR = BASE_DIR / 'templates'
+OUTPUT_DIR = BASE_DIR
+SHOWS_DIR = OUTPUT_DIR / 'shows'
 
 def load_data():
-    with open(DATA_FILE, 'r') as f:
-        return json.load(f)
+    """Load show data from JSON file with error handling."""
+    try:
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"ERROR: Data file not found at {DATA_FILE}")
+        sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(f"ERROR: Invalid JSON in data file: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"ERROR: Could not load data: {e}")
+        sys.exit(1)
 
 def save_data(data):
-    with open(DATA_FILE, 'w') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+    """Save show data to JSON file with error handling."""
+    try:
+        with open(DATA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+    except IOError as e:
+        print(f"ERROR: Could not save data: {e}")
+        sys.exit(1)
 
 def extract_feed_path(embed_url):
     parsed = urlparse(embed_url)
@@ -61,36 +80,56 @@ def update_show_data(shows):
     return shows
 
 def generate_site():
+    """Generate static site from show data."""
     shows = load_data()
     shows = update_show_data(shows)
     shows.sort(key=lambda x: x['date'], reverse=True)
 
     # Setup Jinja Environment (Required for 'include')
-    env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+    try:
+        env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
+    except Exception as e:
+        print(f"ERROR: Could not load templates from {TEMPLATE_DIR}: {e}")
+        sys.exit(1)
 
     # 1. Generate Individual Show Pages
-    master_template = env.get_template('master_glitch.html')
-    
-    if not os.path.exists(SHOWS_DIR):
-        os.makedirs(SHOWS_DIR)
+    try:
+        master_template = env.get_template('master_glitch.html')
+    except Exception as e:
+        print(f"ERROR: Could not load master template: {e}")
+        sys.exit(1)
+
+    # Create shows directory if it doesn't exist
+    try:
+        SHOWS_DIR.mkdir(parents=True, exist_ok=True)
+    except OSError as e:
+        print(f"ERROR: Could not create shows directory: {e}")
+        sys.exit(1)
 
     for show in shows:
-        context = show.copy()
-        context['generated_at'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        output = master_template.render(context)
-        filename = f"{show['id']}.html"
-        filepath = os.path.join(SHOWS_DIR, filename)
-        with open(filepath, 'w') as f:
-            f.write(output)
-        print(f"Generated Page: {filename}")
+        try:
+            context = show.copy()
+            context['generated_at'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            output = master_template.render(context)
+            filename = f"{show['id']}.html"
+            filepath = SHOWS_DIR / filename
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(output)
+            print(f"Generated Page: {filename}")
+        except Exception as e:
+            print(f"WARNING: Could not generate page for {show.get('id', 'unknown')}: {e}")
 
     # 2. Generate Index Page (List Layout)
-    index_template = env.get_template('index_list_glitch.html')
-    index_output = index_template.render(shows=shows, generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    
-    with open(os.path.join(OUTPUT_DIR, 'index.html'), 'w') as f:
-        f.write(index_output)
-    print("Generated Index: index.html")
+    try:
+        index_template = env.get_template('index_list_glitch.html')
+        index_output = index_template.render(shows=shows, generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+        with open(OUTPUT_DIR / 'index.html', 'w', encoding='utf-8') as f:
+            f.write(index_output)
+        print("Generated Index: index.html")
+    except Exception as e:
+        print(f"ERROR: Could not generate index page: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     generate_site()
