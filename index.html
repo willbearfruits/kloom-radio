@@ -6,13 +6,23 @@
     <title>KLOOM LO KADOSH // ARCHIVE</title>
     
     <!-- SEO -->
-    <meta name="description" content="Kloom Lo Kadosh Radio Archive. Experimental sound, noise, and conversations hosted by Yaniv Schonfeld and friends.">
-    <meta name="keywords" content="radio, experimental, noise, drone, glitch, israel, podcast">
+    <meta name="description" content="Kloom Lo Kadosh Radio Archive. Experimental sound, noise, and conversations hosted by Yaniv Schonfeld and friends. Nothing is Holy.">
+    <meta name="keywords" content="radio, experimental, noise, drone, glitch, israel, podcast, yaniv schonfeld, kloom lo kadosh, nothing is holy">
+    <meta name="author" content="Yaniv Schonfeld">
     
-    <!-- OpenGraph -->
-    <meta property="og:title" content="Kloom Lo Kadosh Archive">
-    <meta property="og:description" content="The signal is the message. No gods, no masters.">
+    <!-- OpenGraph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://willbearfruits.github.io/kloom-radio/">
+    <meta property="og:title" content="NOTHING IS HOLY // RADIO ARCHIVE">
+    <meta property="og:description" content="The signal is the message. No gods, no masters. Listen to the archive.">
+    <meta property="og:image" content="https://thumbnailer.mixcloud.com/unsafe/600x600/profile/d/9/0/6/7db7-329b-40e9-b239-55b543808a3d">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://willbearfruits.github.io/kloom-radio/">
+    <meta property="twitter:title" content="NOTHING IS HOLY // RADIO ARCHIVE">
+    <meta property="twitter:description" content="The signal is the message. No gods, no masters. Listen to the archive.">
+    <meta property="twitter:image" content="https://thumbnailer.mixcloud.com/unsafe/600x600/profile/d/9/0/6/7db7-329b-40e9-b239-55b543808a3d">
 
     <style>
         :root {
@@ -269,6 +279,49 @@
         }
     </style>
     <script>
+        // DOOM GOD MODE (IDDQD)
+        let keySequence = [];
+        const konamiCode = ['i', 'd', 'd', 'q', 'd'];
+        
+        document.addEventListener('keydown', (e) => {
+            keySequence.push(e.key.toLowerCase());
+            keySequence = keySequence.slice(-5); // Keep last 5 keys
+
+            if (JSON.stringify(keySequence) === JSON.stringify(konamiCode)) {
+                activateGodMode();
+            }
+        });
+
+        function activateGodMode() {
+            // Play Sound
+            const audio = new Audio('assets/doom_iddqd.mp3');
+            audio.play();
+
+            // Flash Screen Yellow (God Mode Eyes)
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.width = '100vw';
+            flash.style.height = '100vh';
+            flash.style.background = 'rgba(255, 255, 0, 0.5)';
+            flash.style.zIndex = '9999';
+            flash.style.pointerEvents = 'none';
+            document.body.appendChild(flash);
+            
+            setTimeout(() => {
+                flash.style.transition = 'opacity 1s';
+                flash.style.opacity = '0';
+                setTimeout(() => flash.remove(), 1000);
+            }, 200);
+
+            // Change Title
+            document.querySelector('h1').innerText = "GOD MODE ACTIVE";
+            document.querySelector('h1').style.color = "#ffff00";
+            
+            console.log("DEGREELESSNESS MODE ON");
+        }
+
         function togglePlay(id, type, url) {
             const card = document.getElementById('card-' + id);
             const playerContainer = document.getElementById('player-' + id);
@@ -863,7 +916,7 @@ Nothing is holly.</div>
     </div>
 
     <footer class="footer">
-        GENERATED: 2026-02-02 22:44:27<br>
+        GENERATED: 2026-02-02 22:57:40<br>
         SYSTEM STATUS: ONLINE<br>
         HOSTED ON MEZO INFRASTRUCTURE
     </footer>
