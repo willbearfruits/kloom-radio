@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="6" dy="6" stdDeviation="0" flood-color="#000"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0000ff"/>
+
+  <!-- Scanline overlay -->
+  <defs>
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" width="1200" height="4">
+      <rect width="1200" height="2" fill="rgba(0,0,0,0.08)"/>
+      <rect y="2" width="1200" height="2" fill="transparent"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#scanlines)"/>
+
+  <!-- Top border stripe -->
+  <rect y="0" width="1200" height="8" fill="#000"/>
+
+  <!-- Bottom border stripe -->
+  <rect y="622" width="1200" height="8" fill="#000"/>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="12" height="630" fill="#ff00ff"/>
+
+  <!-- Right accent bar -->
+  <rect x="1188" y="0" width="12" height="630" fill="#ff00ff"/>
+
+  <!-- Magenta block — main title background -->
+  <rect x="60" y="160" width="1080" height="280" fill="#ff00ff" filter="url(#shadow)" rx="0"/>
+  <!-- Shadow for magenta block -->
+  <rect x="66" y="166" width="1080" height="280" fill="#000" z-index="-1"/>
+  <!-- Re-draw magenta on top -->
+  <rect x="60" y="160" width="1080" height="280" fill="#ff00ff"/>
+  <!-- Border around magenta -->
+  <rect x="60" y="160" width="1080" height="280" fill="none" stroke="#000" stroke-width="6"/>
+
+  <!-- Main title: NOTHING IS HOLY -->
+  <text x="600" y="310" text-anchor="middle" font-family="Impact, sans-serif" font-size="130" fill="#000" letter-spacing="8" transform="rotate(-2, 600, 310)">NOTHING IS HOLY</text>
+  <!-- Title shadow -->
+  <text x="606" y="316" text-anchor="middle" font-family="Impact, sans-serif" font-size="130" fill="#fff" letter-spacing="8" opacity="0.4" transform="rotate(-2, 600, 310)">NOTHING IS HOLY</text>
+  <!-- Title again on top -->
+  <text x="600" y="310" text-anchor="middle" font-family="Impact, sans-serif" font-size="130" fill="#000" letter-spacing="8" transform="rotate(-2, 600, 310)">NOTHING IS HOLY</text>
+
+  <!-- Subtitle bar -->
+  <rect x="360" y="380" width="480" height="44" fill="#000"/>
+  <text x="600" y="412" text-anchor="middle" font-family="Courier New, monospace" font-size="22" fill="#fff" letter-spacing="4">KLOOM LO KADOSH // RADIO ARCHIVE</text>
+
+  <!-- Top label -->
+  <rect x="60" y="80" width="340" height="42" fill="#000"/>
+  <text x="80" y="110" font-family="Courier New, monospace" font-size="20" fill="#ffff00" letter-spacing="2">// ARCHIVE_INDEX</text>
+
+  <!-- Bottom status bar -->
+  <rect y="540" width="1200" height="82" fill="#000"/>
+  <text x="80" y="575" font-family="Courier New, monospace" font-size="18" fill="#00ff00">SYSTEM STATUS: ONLINE</text>
+  <text x="80" y="605" font-family="Courier New, monospace" font-size="16" fill="#ffff00" opacity="0.7">SIGNAL IS THE MESSAGE. NO GODS, NO MASTERS.</text>
+
+  <!-- Total shows badge -->
+  <rect x="820" y="548" width="310" height="66" fill="#ffff00" stroke="#00ff00" stroke-width="3"/>
+  <text x="975" y="575" text-anchor="middle" font-family="Impact, sans-serif" font-size="20" fill="#000">TOTAL SHOWS</text>
+  <text x="975" y="605" text-anchor="middle" font-family="Impact, sans-serif" font-size="28" fill="#000">16 ARCHIVED</text>
+
+  <!-- Decorative glitch bars top-right -->
+  <rect x="900" y="85" width="240" height="6" fill="#ffff00"/>
+  <rect x="920" y="97" width="200" height="6" fill="#00ff00"/>
+  <rect x="940" y="109" width="180" height="6" fill="#ff00ff"/>
+  <rect x="900" y="121" width="160" height="6" fill="#ffff00" opacity="0.6"/>
+
+  <!-- Small corner glitch bottom-left -->
+  <rect x="60" y="500" width="80" height="6" fill="#00ff00"/>
+  <rect x="60" y="512" width="50" height="6" fill="#ffff00"/>
+  <rect x="60" y="524" width="110" height="6" fill="#ff00ff"/>
+</svg>

@@ -79,6 +79,143 @@ def update_show_data(shows):
         print("Updated shows.json with new metadata.")
     return shows
 
+def generate_og_image(show):
+    """Generate a per-show OG image (1200x630 PNG)."""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        print("WARNING: Pillow not installed — skipping OG image generation")
+        return
+
+    W, H = 1200, 630
+    BLUE, YELLOW, MAGENTA, GREEN, BLACK, WHITE = (
+        (0,0,255), (255,255,0), (255,0,255), (0,255,0), (0,0,0), (255,255,255)
+    )
+
+    def load_font(size):
+        for p in ["/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]:
+            if os.path.exists(p):
+                return ImageFont.truetype(p, size)
+        return ImageFont.load_default()
+
+    def load_mono(size):
+        for p in ["/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf",
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"]:
+            if os.path.exists(p):
+                return ImageFont.truetype(p, size)
+        return ImageFont.load_default()
+
+    img = Image.new("RGB", (W, H), BLUE)
+    d   = ImageDraw.Draw(img)
+
+    # scanlines
+    for y in range(0, H, 4):
+        d.line([(0, y), (W, y)], fill=(0, 0, 12), width=2)
+
+    # border bars
+    d.rectangle([0, 0, W, 8],   fill=BLACK)
+    d.rectangle([0, H-8, W, H], fill=BLACK)
+    d.rectangle([0, 0, 12, H],  fill=MAGENTA)
+    d.rectangle([W-12, 0, W, H], fill=MAGENTA)
+
+    # series label top-left
+    d.rectangle([60, 60, 580, 108], fill=BLACK)
+    d.text((80, 68), f"// {show.get('series','').upper()} // {show.get('date','')}", fill=YELLOW, font=load_mono(22))
+
+    # main magenta box (shadow + fill + border)
+    bx, by, bw, bh = 60, 140, 1080, 300
+    d.rectangle([bx+6, by+6, bx+bw+6, by+bh+6], fill=BLACK)
+    d.rectangle([bx, by, bx+bw, by+bh],          fill=MAGENTA)
+    d.rectangle([bx, by, bx+bw, by+bh],          outline=BLACK, width=6)
+
+    # --- title: wrap long titles across up to 3 lines ---
+    title = show.get('title', 'UNTITLED')
+    font_big  = load_font(72)
+    font_med  = load_font(52)
+    font_sm   = load_font(40)
+
+    # measure and pick the right size / line-split
+    def measure(txt, fnt):
+        return d.textlength(txt, font=fnt)
+
+    if measure(title, font_big) <= bw - 80:
+        # fits on one line at big size
+        d.text((600, 290), title, fill=BLACK, font=font_big, anchor="mm")
+    elif measure(title, font_med) <= bw - 80:
+        d.text((600, 290), title, fill=BLACK, font=font_med, anchor="mm")
+    else:
+        # split into words and wrap at med size
+        words  = title.split()
+        lines  = []
+        current = ""
+        for w in words:
+            test = (current + " " + w).strip()
+            if measure(test, font_med) <= bw - 80:
+                current = test
+            else:
+                if current:
+                    lines.append(current)
+                current = w
+        if current:
+            lines.append(current)
+
+        # if still too many chars per line drop to small font
+        fnt = font_med
+        if any(measure(l, font_med) > bw - 80 for l in lines):
+            fnt = font_sm
+            # re-wrap at small size
+            lines  = []
+            current = ""
+            for w in words:
+                test = (current + " " + w).strip()
+                if measure(test, fnt) <= bw - 80:
+                    current = test
+                else:
+                    if current:
+                        lines.append(current)
+                    current = w
+            if current:
+                lines.append(current)
+
+        line_h = fnt.size if hasattr(fnt, 'size') else 60
+        total_h = line_h * len(lines)
+        start_y = by + bh // 2 - total_h // 2 + line_h // 2
+        for i, line in enumerate(lines[:3]):
+            d.text((600, start_y + i * line_h), line, fill=BLACK, font=fnt, anchor="mm")
+
+    # tags row
+    tags = show.get('tags', [])[:4]
+    tx = 100
+    for tag in tags:
+        tw = int(measure(f"#{tag}", load_mono(18))) + 24
+        d.rectangle([tx, 478, tx+tw, 510], fill=WHITE, outline=BLACK, width=3)
+        d.text((tx+12, 482), f"#{tag}", fill=BLACK, font=load_mono(18))
+        tx += tw + 12
+
+    # glitch bars top-right
+    for i, (off, w, col) in enumerate([(0,240,YELLOW),(20,200,GREEN),(40,180,MAGENTA),(0,160,YELLOW)]):
+        d.rectangle([900+off, 65+i*12, 900+off+w, 71+i*12], fill=col)
+
+    # bottom status bar
+    d.rectangle([0, 540, W, H-8], fill=BLACK)
+    d.text((80, 558), "KLOOM LO KADOSH // NOTHING IS HOLY",  fill=GREEN,  font=load_mono(18))
+    d.text((80, 585), "THE SIGNAL IS THE MESSAGE.",           fill=YELLOW, font=load_mono(15))
+
+    # guest badge bottom-right if present
+    guest = show.get('guest', '')
+    if guest:
+        d.rectangle([820, 548, 1130, 614], fill=YELLOW, outline=GREEN)
+        d.text((975, 562), "GUEST",  fill=BLACK, font=load_mono(16), anchor="mm")
+        d.text((975, 590), guest,    fill=BLACK, font=load_mono(20), anchor="mm")
+
+    og_dir = BASE_DIR / 'assets' / 'og'
+    og_dir.mkdir(parents=True, exist_ok=True)
+    out = og_dir / f"{show['id']}.png"
+    img.save(str(out), "PNG")
+    print(f"Generated OG: assets/og/{show['id']}.png")
+
+
 def generate_site():
     """Generate static site from show data."""
     shows = load_data()
@@ -108,6 +245,9 @@ def generate_site():
 
     for show in shows:
         try:
+            # Generate OG image for this show
+            generate_og_image(show)
+
             context = show.copy()
             context['generated_at'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             output = master_template.render(context)
