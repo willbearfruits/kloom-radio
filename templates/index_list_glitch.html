@@ -357,68 +357,8 @@
             document.querySelector('h1').style.color = "#ffff00";
         }
 
-        /* togglePlay – inline embed player for Mixcloud / YouTube cards.
-           showData (4th arg) wires the persistent player indicator. */
-        function togglePlay(id, type, url, showData) {
-            const card = document.getElementById('card-' + id);
-            const playerContainer = document.getElementById('player-' + id);
-            const playBtn = card.querySelector('.action');
-
-            // Close other inline players
-            document.querySelectorAll('.player-container').forEach(el => {
-                if (el.id !== 'player-' + id) {
-                    el.textContent = '';
-                    el.parentElement.classList.remove('active-card');
-                    const otherBtn = el.parentElement.querySelector('.action');
-                    if (otherBtn) otherBtn.textContent = "▶";
-                }
-            });
-
-            if (playerContainer.children.length > 0) {
-                // Toggle Off
-                playerContainer.textContent = "";
-                playBtn.textContent = "▶";
-                card.classList.remove('active-card');
-                if (window.KloomPlayer) KloomPlayer.close();
-            } else {
-                // Toggle On
-                playBtn.textContent = "▼";
-                card.classList.add('active-card');
-
-                if (type === 'youtube') {
-                    try {
-                        const urlObj = new URL(url);
-                        if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
-                            const iframe = document.createElement('iframe');
-                            iframe.width = '100%';
-                            iframe.height = '315';
-                            iframe.src = url + '?autoplay=1';
-                            iframe.frameBorder = '0';
-                            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                            iframe.allowFullscreen = true;
-                            playerContainer.appendChild(iframe);
-                        }
-                    } catch (e) { /* ignore */ }
-                } else {
-                    // Mixcloud embed
-                    try {
-                        const urlObj = new URL(url);
-                        if (urlObj.hostname === 'player-widget.mixcloud.com') {
-                            const iframe = document.createElement('iframe');
-                            iframe.width = '100%';
-                            iframe.height = '120';
-                            iframe.src = url + '&autoplay=1';
-                            iframe.frameBorder = '0';
-                            iframe.allow = 'encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;';
-                            playerContainer.appendChild(iframe);
-                        }
-                    } catch (e) { /* ignore */ }
-                }
-
-                // Show indicator in persistent player bar
-                if (showData && window.KloomPlayer) KloomPlayer.setNowPlaying(showData);
-            }
-        }
+        /* embed / youtube cards navigate to their show page on play;
+           only local_audio uses KloomPlayer.load() inline */
     </script>
 </head>
 <body>

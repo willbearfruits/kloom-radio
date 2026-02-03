@@ -36,8 +36,11 @@
     persist();
   }
 
-  /* indicator only – used for Mixcloud / YouTube embeds */
+  /* indicator only – used for Mixcloud / YouTube embeds.
+     If local audio is currently playing we leave the player bar alone;
+     the embed is an iframe we can't control anyway. */
   function setNowPlaying(data) {
+    if (audio && !audio.paused) return;
     killAudio();
     state = {
       id:      data.id,
@@ -56,19 +59,34 @@
       var s = JSON.parse(localStorage.getItem(KEY));
       if (!s || s.type !== 'local_audio' || (!s.src && !s.audio_url)) return;
       state = s;
+      state.playing = false;
       renderFull();
+      syncBtn();
       audio = new Audio(state.audio_url || state.src);
       audio.addEventListener('timeupdate', tick);
       audio.addEventListener('ended',      onEnded);
-      /* browsers block autoplay without gesture – show paused state */
-      audio.currentTime = state.time || 0;
-      state.playing = false;
-      syncBtn();
+      /* seek only after the browser knows the duration; earlier calls are silently dropped */
+      audio.addEventListener('loadedmetadata', function onMeta() {
+        audio.removeEventListener('loadedmetadata', onMeta);
+        audio.currentTime = state.time || 0;
+        tick(); // paint progress bar at the saved position
+      });
+      /* pulsing hint so user knows audio was playing */
+      var mid = document.getElementById('kp-mid');
+      if (mid) {
+        var hint    = document.createElement('div');
+        hint.id     = 'kp-resume';
+        hint.className = 'kp-resume';
+        hint.textContent = '\u25B6  TAP TO RESUME';
+        mid.insertBefore(hint, mid.firstChild);
+      }
     } catch (e) { /* ignore */ }
   }
 
   function togglePlay() {
     if (!audio) return;
+    var hint = document.getElementById('kp-resume');
+    if (hint) hint.parentNode.removeChild(hint);
     if (audio.paused) { audio.play();  state.playing = true;  }
     else              { audio.pause(); state.playing = false; }
     syncBtn();

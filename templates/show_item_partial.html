@@ -34,12 +34,9 @@
                          {% if show.type == 'local_audio' %}
                          onclick='KloomPlayer.load({{ show | tojson }})'
                          {% else %}
-                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({{ show | tojson }})'
+                         onclick='window.location="shows/{{ show.id }}.html"'
                          {% endif %}>
                         ▶
                     </div>
                 </div>
-
-                <!-- Inline Player Container (Full Width Bottom) -->
-                <div id="player-{{ show.id }}" class="player-container" role="region" aria-label="Audio player" aria-live="polite"></div>
             </div>
