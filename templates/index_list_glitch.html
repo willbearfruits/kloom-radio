@@ -27,6 +27,13 @@
     <meta property="twitter:description" content="The signal is the message. No gods, no masters. Listen to the archive.">
     <meta property="twitter:image" content="https://willbearfruits.github.io/kloom-radio/assets/og-image.png">
 
+    <!-- Favicon & feeds -->
+    <link rel="icon" href="assets/favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="feed.xml">
+    <link rel="stylesheet" href="assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://thumbnailer.mixcloud.com https://i.ytimg.com data:; frame-src https://player-widget.mixcloud.com https://www.youtube.com; media-src 'self' blob:; connect-src 'self' https://api.mixcloud.com;">
 
@@ -45,6 +52,7 @@
             font-family: 'Impact', sans-serif;
             margin: 0;
             padding: 0;
+            padding-bottom: 90px;
             line-height: 1.4;
         }
 
@@ -349,17 +357,18 @@
             document.querySelector('h1').style.color = "#ffff00";
         }
 
-        function togglePlay(id, type, url) {
+        /* togglePlay – inline embed player for Mixcloud / YouTube cards.
+           showData (4th arg) wires the persistent player indicator. */
+        function togglePlay(id, type, url, showData) {
             const card = document.getElementById('card-' + id);
             const playerContainer = document.getElementById('player-' + id);
             const playBtn = card.querySelector('.action');
 
-            // Close others
+            // Close other inline players
             document.querySelectorAll('.player-container').forEach(el => {
                 if (el.id !== 'player-' + id) {
                     el.textContent = '';
                     el.parentElement.classList.remove('active-card');
-                    // Reset button icon for others
                     const otherBtn = el.parentElement.querySelector('.action');
                     if (otherBtn) otherBtn.textContent = "▶";
                 }
@@ -370,26 +379,13 @@
                 playerContainer.textContent = "";
                 playBtn.textContent = "▶";
                 card.classList.remove('active-card');
+                if (window.KloomPlayer) KloomPlayer.close();
             } else {
                 // Toggle On
                 playBtn.textContent = "▼";
                 card.classList.add('active-card');
 
-                // CREATE DOM ELEMENTS SAFELY instead of innerHTML
-                if (type === 'local_audio') {
-                    const audio = document.createElement('audio');
-                    audio.controls = true;
-                    audio.autoplay = true;
-                    audio.style.cssText = 'width: 100%; filter: invert(1); border: none;';
-
-                    const source = document.createElement('source');
-                    source.src = url; // Browser automatically escapes this
-                    source.type = 'audio/mp4';
-
-                    audio.appendChild(source);
-                    playerContainer.appendChild(audio);
-                } else if (type === 'youtube') {
-                    // YouTube embed
+                if (type === 'youtube') {
                     try {
                         const urlObj = new URL(url);
                         if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
@@ -401,12 +397,8 @@
                             iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
                             iframe.allowFullscreen = true;
                             playerContainer.appendChild(iframe);
-                        } else {
-                            console.error('Invalid YouTube URL hostname:', urlObj.hostname);
                         }
-                    } catch (e) {
-                        console.error('Invalid YouTube URL:', url, e);
-                    }
+                    } catch (e) { /* ignore */ }
                 } else {
                     // Mixcloud embed
                     try {
@@ -419,13 +411,12 @@
                             iframe.frameBorder = '0';
                             iframe.allow = 'encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;';
                             playerContainer.appendChild(iframe);
-                        } else {
-                            console.error('Invalid embed URL hostname:', urlObj.hostname);
                         }
-                    } catch (e) {
-                        console.error('Invalid embed URL:', url, e);
-                    }
+                    } catch (e) { /* ignore */ }
                 }
+
+                // Show indicator in persistent player bar
+                if (showData && window.KloomPlayer) KloomPlayer.setNowPlaying(showData);
             }
         }
     </script>
@@ -441,6 +432,7 @@
         
         <div class="controls">
             <span>// ARCHIVE_INDEX</span>
+            <input type="text" id="kloom-search" class="kloom-search" placeholder="SEARCH THE ARCHIVE..." autocomplete="off" spellcheck="false" aria-label="Search shows">
             <span>TOTAL_SHOWS: {{ shows|length }}</span>
         </div>
 
@@ -479,11 +471,31 @@
 
     </div>
 
+    <!-- Newsletter -->
+    <div class="newsletter-box">
+        <div class="nb-header">// SUBSCRIBE // GET THE SIGNAL</div>
+        <div class="nb-form">
+            <input type="email" id="nl-email" placeholder="your@email.com">
+            <button onclick="var e=document.getElementById('nl-email');if(e.value){window.location='mailto:kloom@kloom-radio.net?subject=Subscribe&amp;body='+encodeURIComponent('Subscribe me: '+e.value);}">SUBSCRIBE</button>
+        </div>
+    </div>
+
+    <!-- Nav links -->
+    <div class="nav-links">
+        <a href="about.html">ABOUT</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="feed.xml">RSS</a>
+        <a href="https://github.com/willbearfruits/kloom-radio" target="_blank" rel="noopener noreferrer">GITHUB</a>
+    </div>
+
     <footer class="footer">
         GENERATED: {{ generated_at }}<br>
         SYSTEM STATUS: ONLINE<br>
         HOSTED ON MEZO INFRASTRUCTURE
     </footer>
 
+    {% include 'player_partial.html' %}
+    <script src="assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
 </body>
 </html>

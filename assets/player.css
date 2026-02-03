@@ -1,0 +1,129 @@
+/* ── Persistent Player ── */
+#kloom-player            { position:fixed; bottom:0; left:0; right:0; z-index:9999; display:none; }
+#kloom-player.active     { display:block; }
+
+.kp-bar {
+  background:#000;
+  border-top:5px solid #ff00ff;
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  box-shadow:0 -3px 14px rgba(0,0,0,.7);
+}
+
+.kp-play-btn {
+  width:42px; height:42px; min-width:42px;
+  background:#ff00ff; border:3px solid #fff;
+  color:#000; font-size:1.2rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-family:sans-serif;
+}
+.kp-play-btn:hover { background:#fff; }
+
+.kp-info   { min-width:0; max-width:260px; }
+.kp-title  { color:#ffff00; font-family:Impact,sans-serif; font-size:1rem; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.kp-meta   { color:rgba(255,255,255,.55); font-family:monospace; font-size:.7rem; }
+
+.kp-mid { flex:1; min-width:0; }
+
+/* progress bar (local audio) */
+.kp-progress-wrap   { display:flex; align-items:center; gap:8px; }
+.kp-progress        { flex:1; height:5px; background:#333; cursor:pointer; position:relative; }
+.kp-progress-fill   { height:100%; background:#00ff00; width:0%; }
+.kp-time            { color:#fff; font-family:monospace; font-size:.7rem; white-space:nowrap; min-width:72px; text-align:right; }
+
+/* embed / youtube "now playing" badge */
+.kp-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.5);
+  padding:5px 14px; border-radius:0;
+  color:#00ff00; font-family:monospace; font-size:.8rem;
+  text-decoration:none; white-space:nowrap;
+}
+.kp-badge:hover { background:rgba(255,255,255,.18); color:#fff; }
+
+.kp-close-btn {
+  width:28px; height:28px; min-width:28px;
+  background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.4);
+  color:#fff; font-size:.9rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-family:sans-serif;
+}
+.kp-close-btn:hover { background:#fff; color:#000; border-color:#fff; }
+
+/* ── Search input ── */
+.kloom-search {
+  flex:1; max-width:320px;
+  background:#000; color:#ffff00;
+  border:3px solid #ffff00; outline:none;
+  padding:6px 12px;
+  font-family:'Courier New',monospace; font-size:.9rem; font-weight:bold;
+  transform:skew(-1deg);
+}
+.kloom-search::placeholder { color:rgba(255,255,0,.4); }
+.kloom-search:focus         { border-color:#00ff00; }
+
+/* ── Newsletter box ── */
+.newsletter-box {
+  max-width:600px; margin:60px auto 0;
+  background:#ff00ff; border:5px solid #000;
+  padding:30px; box-shadow:12px 12px 0 #000;
+  transform:skew(-2deg);
+}
+.newsletter-box .nb-header {
+  background:#000; color:#ffff00;
+  padding:8px 16px; margin:-30px -30px 20px;
+  font-family:monospace; font-weight:bold; font-size:1.1rem;
+}
+.newsletter-box .nb-form { transform:skew(2deg); }
+.newsletter-box input[type=email] {
+  width:100%; box-sizing:border-box;
+  padding:12px; border:3px solid #000;
+  background:#fff; color:#000;
+  font-family:monospace; font-size:1rem; margin-bottom:12px;
+}
+.newsletter-box button {
+  width:100%; padding:12px;
+  background:#00ff00; color:#000; border:3px solid #000;
+  font-family:Impact,sans-serif; font-size:1.1rem;
+  text-transform:uppercase; cursor:pointer;
+}
+.newsletter-box button:hover { background:#fff; }
+
+/* ── Social links bar ── */
+.social-bar {
+  display:flex; gap:12px; flex-wrap:wrap;
+  justify-content:center; margin-top:16px;
+}
+.social-bar a {
+  background:#000; color:#fff; text-decoration:none;
+  padding:6px 14px; border:2px solid #fff;
+  font-family:monospace; font-size:.8rem; font-weight:bold;
+}
+.social-bar a:hover { background:#fff; color:#000; }
+
+/* ── Show page play button ── */
+.show-play-btn {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; padding:18px;
+  background:#00ff00; border:5px solid #000;
+  color:#000; font-family:Impact,sans-serif; font-size:1.6rem;
+  text-transform:uppercase; cursor:pointer;
+  box-shadow:6px 6px 0 #000; transition:all .1s;
+}
+.show-play-btn:hover { transform:translate(-3px,-3px); box-shadow:9px 9px 0 #000; }
+.show-play-btn span { font-size:1.2rem; }
+
+/* ── Nav links (about / contact / rss) ── */
+.nav-links { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
+.nav-links a {
+  background:#000; color:#fff; text-decoration:none;
+  padding:4px 10px; border:2px solid rgba(255,255,255,.5);
+  font-family:monospace; font-size:.75rem;
+}
+.nav-links a:hover { background:#fff; color:#000; border-color:#fff; }
+
+/* ── Page body padding (so content isn't hidden behind persistent player) ── */
+body { padding-bottom:90px; }

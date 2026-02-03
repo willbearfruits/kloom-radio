@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM // CONTACT</title>
+    <meta name="description" content="Contact Kloom Lo Kadosh. Send transmissions our way.">
+    <link rel="icon" href="assets/favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="feed.xml">
+    <link rel="stylesheet" href="assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+    <style>
+        body {
+            background-color: #0000ff;
+            color: #ffff00;
+            font-family: 'Impact', sans-serif;
+            margin: 0;
+            padding: 10px;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 8vw;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+            mix-blend-mode: difference;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+            transform: rotate(-5deg);
+            white-space: nowrap;
+        }
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .nav a {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-weight: bold;
+            border: 2px solid #fff;
+        }
+        .nav a:hover {
+            background: #fff;
+            color: #000;
+        }
+        .container {
+            margin-top: 15vh;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 100px;
+            padding: 0 20px;
+        }
+        .box {
+            background: #ff00ff;
+            border: 5px solid #000;
+            padding: 30px;
+            box-shadow: 15px 15px 0px #000;
+            transform: skew(-2deg);
+        }
+        .box-header {
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            margin-top: -55px;
+            margin-bottom: 20px;
+            transform: skew(2deg);
+        }
+        .show-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #000;
+            text-shadow: 2px 2px 0px #fff;
+        }
+        .description {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            margin-top: 20px;
+            border: 2px dashed #00ff00;
+            white-space: pre-wrap;
+        }
+        .footer {
+            text-align: center;
+            font-family: monospace;
+            margin-top: 50px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    {% include 'player_partial.html' %}
+
+    <h1>NOTHING<br>IS HOLY</h1>
+
+    <div class="nav">
+        <a href="./">/// BACK_TO_ARCHIVE</a>
+    </div>
+
+    <div class="container">
+        <div class="box">
+            <div class="box-header">// CONTACT // TRANSMIT</div>
+
+            <div class="show-title">SEND A SIGNAL</div>
+
+            <div class="description">Want to contribute a show?
+Have noise to share?
+Got something to say?
+
+Open an issue on GitHub —
+that's where we live when
+we're not on the air.
+            </div>
+
+            <div class="description" style="margin-top:30px; border-color:#ffff00; color:#fff;">
+                <div style="background:#ffff00;color:#000;display:inline-block;padding:2px 5px;margin-bottom:10px;font-weight:bold;">// GITHUB</div>
+                <a href="https://github.com/willbearfruits/kloom-radio/issues" target="_blank" rel="noopener noreferrer" style="color:#00ff00;font-size:1.1rem;">github.com/willbearfruits/kloom-radio/issues</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <a href="./">ARCHIVE</a>
+        <a href="about.html">ABOUT</a>
+        <a href="feed.xml">RSS</a>
+    </div>
+
+    <div class="footer">
+        KLOOM LO KADOSH RADIO ARCHIVE // GENERATED {{ generated_at }}
+    </div>
+
+    <script src="assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
+</body>
+</html>

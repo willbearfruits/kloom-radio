@@ -31,7 +31,11 @@
                          aria-label="Play {{ show.title }}"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('{{ show.id }}', '{{ show.type }}', '{% if show.type == 'local_audio' %}{{ show.src }}{% else %}{{ show.embed_url }}{% endif %}')">
+                         {% if show.type == 'local_audio' %}
+                         onclick='KloomPlayer.load({{ show | tojson }})'
+                         {% else %}
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({{ show | tojson }})'
+                         {% endif %}>
                         ▶
                     </div>
                 </div>

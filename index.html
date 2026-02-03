@@ -27,6 +27,13 @@
     <meta property="twitter:description" content="The signal is the message. No gods, no masters. Listen to the archive.">
     <meta property="twitter:image" content="https://willbearfruits.github.io/kloom-radio/assets/og-image.png">
 
+    <!-- Favicon & feeds -->
+    <link rel="icon" href="assets/favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="feed.xml">
+    <link rel="stylesheet" href="assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://thumbnailer.mixcloud.com https://i.ytimg.com data:; frame-src https://player-widget.mixcloud.com https://www.youtube.com; media-src 'self' blob:; connect-src 'self' https://api.mixcloud.com;">
 
@@ -45,6 +52,7 @@
             font-family: 'Impact', sans-serif;
             margin: 0;
             padding: 0;
+            padding-bottom: 90px;
             line-height: 1.4;
         }
 
@@ -349,17 +357,18 @@
             document.querySelector('h1').style.color = "#ffff00";
         }
 
-        function togglePlay(id, type, url) {
+        /* togglePlay – inline embed player for Mixcloud / YouTube cards.
+           showData (4th arg) wires the persistent player indicator. */
+        function togglePlay(id, type, url, showData) {
             const card = document.getElementById('card-' + id);
             const playerContainer = document.getElementById('player-' + id);
             const playBtn = card.querySelector('.action');
 
-            // Close others
+            // Close other inline players
             document.querySelectorAll('.player-container').forEach(el => {
                 if (el.id !== 'player-' + id) {
                     el.textContent = '';
                     el.parentElement.classList.remove('active-card');
-                    // Reset button icon for others
                     const otherBtn = el.parentElement.querySelector('.action');
                     if (otherBtn) otherBtn.textContent = "▶";
                 }
@@ -370,26 +379,13 @@
                 playerContainer.textContent = "";
                 playBtn.textContent = "▶";
                 card.classList.remove('active-card');
+                if (window.KloomPlayer) KloomPlayer.close();
             } else {
                 // Toggle On
                 playBtn.textContent = "▼";
                 card.classList.add('active-card');
 
-                // CREATE DOM ELEMENTS SAFELY instead of innerHTML
-                if (type === 'local_audio') {
-                    const audio = document.createElement('audio');
-                    audio.controls = true;
-                    audio.autoplay = true;
-                    audio.style.cssText = 'width: 100%; filter: invert(1); border: none;';
-
-                    const source = document.createElement('source');
-                    source.src = url; // Browser automatically escapes this
-                    source.type = 'audio/mp4';
-
-                    audio.appendChild(source);
-                    playerContainer.appendChild(audio);
-                } else if (type === 'youtube') {
-                    // YouTube embed
+                if (type === 'youtube') {
                     try {
                         const urlObj = new URL(url);
                         if (urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') {
@@ -401,12 +397,8 @@
                             iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
                             iframe.allowFullscreen = true;
                             playerContainer.appendChild(iframe);
-                        } else {
-                            console.error('Invalid YouTube URL hostname:', urlObj.hostname);
                         }
-                    } catch (e) {
-                        console.error('Invalid YouTube URL:', url, e);
-                    }
+                    } catch (e) { /* ignore */ }
                 } else {
                     // Mixcloud embed
                     try {
@@ -419,13 +411,12 @@
                             iframe.frameBorder = '0';
                             iframe.allow = 'encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;';
                             playerContainer.appendChild(iframe);
-                        } else {
-                            console.error('Invalid embed URL hostname:', urlObj.hostname);
                         }
-                    } catch (e) {
-                        console.error('Invalid embed URL:', url, e);
-                    }
+                    } catch (e) { /* ignore */ }
                 }
+
+                // Show indicator in persistent player bar
+                if (showData && window.KloomPlayer) KloomPlayer.setNowPlaying(showData);
             }
         }
     </script>
@@ -441,6 +432,7 @@
         
         <div class="controls">
             <span>// ARCHIVE_INDEX</span>
+            <input type="text" id="kloom-search" class="kloom-search" placeholder="SEARCH THE ARCHIVE..." autocomplete="off" spellcheck="false" aria-label="Search shows">
             <span>TOTAL_SHOWS: 16</span>
         </div>
 
@@ -481,7 +473,9 @@
                          aria-label="Play הבוטים הקימו דת ברשת החברתית הסודית"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('bots-religion', 'local_audio', './bots-religion.m4a')">
+                         
+                         onclick='KloomPlayer.load({"id": "bots-religion", "title": "הבוטים הקימו דת ברשת החברתית הסודית", "series": "Kloom Lo Kadosh", "date": "2026-02-02", "guest": "NotebookLM", "tags": ["AI", "Hebrew", "Experimental", "Religion"], "description": "An AI-generated exploration of bots creating their own theology.", "type": "local_audio", "src": "./bots-religion.m4a", "audio_url": "https://willbearfruits.github.io/kloom-radio/bots-religion.m4a", "show_url": "https://willbearfruits.github.io/kloom-radio/shows/bots-religion.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -521,7 +515,9 @@
                          aria-label="Play Land Devours Inhabitants"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('land-devours-inhabitants', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fradioart106%2Fradioart106_167_land-devours-inhabitants-by-yaniv-schonfeld%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "land-devours-inhabitants", "title": "Land Devours Inhabitants", "series": "Radio Art 106", "date": "2024-01-01", "guest": "Yaniv Schonfeld", "tags": ["Radio Art", "War", "Experimental", "Spoken Word"], "genres": ["Sound Art", "Texts"], "playlist": "", "description": "War texts and music. Opens a window into Yaniv Schonfeld\u0027s thoughts and experiences during this period, through the medium of spoken journal entries.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2Fradioart106%2Fradioart106_167_land-devours-inhabitants-by-yaniv-schonfeld%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/0/2/4/b17a-1c2a-419a-9327-154f161ddd2c", "play_count": 61, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/land-devours-inhabitants.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -570,7 +566,9 @@
                          aria-label="Play The Creative Destruction Show"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('creative-destruction-2025-12-02', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20251202-141411%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "creative-destruction-2025-12-02", "title": "The Creative Destruction Show", "series": "Nothing Is Holy", "date": "2025-12-02", "guest": "Shiri Anat Shifman", "tags": ["Live", "Creative Destruction", "Skate Culture", "Punk", "Israeli Music"], "genres": ["Eclectic", "Local"], "playlist": "", "description": "Hosted with Shiri Anat Shifman. A deep dive into skaters, punks, and the local Israeli music scene.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20251202-141411%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/f/0/7/f/17d5-f5ff-45ee-b457-0e2fedcee197", "play_count": 39, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/creative-destruction-2025-12-02.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -610,7 +608,9 @@
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2024-05-27', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240527-190002%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2024-05-27", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2024-05-27", "guest": "", "tags": ["Mixtape", "Eclectic"], "description": "Live broadcast archive.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240527-190002%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/c/8/1/d5fe-2349-4441-8b53-ee7cc303fa7f", "play_count": 59, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2024-05-27.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -651,7 +651,9 @@ Whats my age again?</div>
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2024-02-12', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240212-162651%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2024-02-12", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2024-02-12", "guest": "", "tags": ["Mixtape"], "genres": ["Eclectic"], "playlist": "", "description": "Sleepy time armadillo angel is here to shave you.\nWhats my age again?", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20240212-162651%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/4/e/6/6/963c-bf0f-4267-9d4f-f9eaa204aba0", "play_count": 28, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2024-02-12.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -693,7 +695,9 @@ Nothing is holly.</div>
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2023-12-16', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231216-195620%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2023-12-16", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2023-12-16", "guest": "", "tags": ["Mixtape", "Winter"], "description": "Sleepy time armadillo angel is here to shave you.\nBeautifully sad songs for the wickedly sleepy demons.\nNothing is holly.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231216-195620%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/4/2/0/3/a22f-5592-409f-9f76-eca815506e52", "play_count": 33, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2023-12-16.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -733,7 +737,9 @@ Nothing is holly.</div>
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2023-11-29', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231129-193434%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2023-11-29", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2023-11-29", "guest": "", "tags": ["Mixtape", "Hip Hop"], "description": "The one with the hip hop.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231129-193434%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/d/f/f/c/7124-5a17-4ca7-9d05-b3513ebf0785", "play_count": 28, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2023-11-29.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -773,7 +779,9 @@ Nothing is holly.</div>
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2023-11-15', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231115-180003%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2023-11-15", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2023-11-15", "guest": "", "tags": ["Mixtape", "War", "Melancholy"], "description": "Here I am sad because there is a war going on and music gives me some peace of mind.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231115-180003%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/8/3/f/1/2d20-2323-44a4-a7a9-56baf30904f3", "play_count": 18, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2023-11-15.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -813,7 +821,9 @@ Nothing is holly.</div>
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2023-11-01', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231101-132641%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2023-11-01", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2023-11-01", "guest": "", "tags": ["Mixtape", "Grunge", "Punk", "Stoner"], "description": "My history with grunge and music in general - mostly punk, grunge, and stoner.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231101-132641%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/0/2/d/02db-925b-4fc6-a9d9-bed653f10945", "play_count": 31, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2023-11-01.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -853,7 +863,9 @@ Nothing is holly.</div>
                          aria-label="Play No Sleep For The Wicked"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('no-sleep-2023-10-27', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231027-175932%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "no-sleep-2023-10-27", "title": "No Sleep For The Wicked", "series": "Nothing Is Holy", "date": "2023-10-27", "guest": "", "tags": ["Mixtape"], "genres": ["Eclectic"], "playlist": "", "description": "Sleepy time armadillo angel is here to shave you.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2FNOTHINGISHOLY%2Fno-sleep-for-the-wicked-20231027-175932%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/profile/d/9/0/6/7db7-329b-40e9-b239-55b543808a3d", "play_count": 77, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/no-sleep-2023-10-27.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -903,7 +915,9 @@ Venetian Snares - Bashing his hea</div>
                          aria-label="Play hightolerance - mixtape - crazy shit - dont listen"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('hightolerance-2020-02-02', 'youtube', 'https://www.youtube.com/embed/yydfs5cjMN8')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "hightolerance-2020-02-02", "title": "hightolerance - mixtape - crazy shit - dont listen", "series": "Nothing Is Holy", "date": "2020-02-02", "guest": "", "tags": ["Archive", "Video", "Breakcore", "Experimental"], "description": "dont have rights\nlove the music\nit makes me feel calm.\n\nXanopticon - Stormtower\nIgorrr - Dieu est ill un etre\nVenetian Snares - Plunging Hornets\nDJ Totschlagger - Ready to change\nKomprex - Mondo Brutale\nNoizefucker - Version 6.66\nVenetian Snares - Bashing his hea", "type": "youtube", "embed_url": "https://www.youtube.com/embed/yydfs5cjMN8", "show_url": "https://willbearfruits.github.io/kloom-radio/shows/hightolerance-2020-02-02.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -952,7 +966,9 @@ Venetian Snares - Bashing his hea</div>
                          aria-label="Play Breakup"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('kol-hazuti-breakup', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F12-8-10_yaniv_schonfeld_breakup%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "kol-hazuti-breakup", "title": "Breakup", "series": "Kol Hazuti", "date": "2010-08-12", "host": "Noa Elran", "guest": "Yaniv Schonfeld", "tags": ["Archive", "Interview", "Hebrew", "Personal"], "genres": ["Talk", "Melancholy"], "playlist": "", "description": "קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית שהתחילה בנושא פרידות והמשיכה לכיוונים שונים.. עורכת ומגישה: נעה אלרן.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2Fnoa_elran%2F12-8-10_yaniv_schonfeld_breakup%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/6/0/0/6/80fd-46f6-4548-9bf6-41239f68278d", "play_count": 9, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/kol-hazuti-breakup.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -992,7 +1008,9 @@ Venetian Snares - Bashing his hea</div>
                          aria-label="Play Things That Should Not Be Played On The Radio"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('kol-hazuti-forbidden', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F10610_yaniv_schonfeld_things_that_should_not_be_played_on_the_radio%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "kol-hazuti-forbidden", "title": "Things That Should Not Be Played On The Radio", "series": "Kol Hazuti", "date": "2010-06-10", "host": "Noa Elran", "guest": "Yaniv Schonfeld", "tags": ["Archive", "Interview", "Hebrew", "Censorship"], "genres": ["Talk", "Noise", "Avant-Garde"], "playlist": "", "description": "רדיו קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית שכולה דברים שאסור להשמיע ברדיו. עורכת ומגישה: נעה אלרן.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2Fnoa_elran%2F10610_yaniv_schonfeld_things_that_should_not_be_played_on_the_radio%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/3/d/6/b/1f1b-41e9-4dd8-9f16-29dd540cbb2c", "play_count": 2, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/kol-hazuti-forbidden.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -1032,7 +1050,9 @@ Venetian Snares - Bashing his hea</div>
                          aria-label="Play God"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('kol-hazuti-god', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F15410_yaniv_schonfeld_god%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "kol-hazuti-god", "title": "God", "series": "Kol Hazuti", "date": "2010-04-15", "host": "Noa Elran", "guest": "Yaniv Schonfeld", "tags": ["Archive", "Interview", "Hebrew", "Theology"], "genres": ["Talk", "Experimental"], "playlist": "", "description": "רדיו קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית על אלוהים. עורכת ומגישה: נעה אלרן", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2Fnoa_elran%2F15410_yaniv_schonfeld_god%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/2/8/7/b/f43b-7b00-49f5-b60b-1828f57c4eb9", "play_count": 2, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/kol-hazuti-god.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -1072,7 +1092,9 @@ Venetian Snares - Bashing his hea</div>
                          aria-label="Play Visual Voice: Love"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('kol-hazuti-love', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2Fvisual-voice_yaniv_schonfeld_love%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "kol-hazuti-love", "title": "Visual Voice: Love", "series": "Kol Hazuti", "date": "2010-01-01", "host": "Noa Elran", "guest": "Yaniv Schonfeld", "tags": ["Archive", "Interview", "Hebrew"], "genres": ["Talk", "Eclectic"], "playlist": "", "description": "קול חזותי הפרעות בשידור. יניב שיינפלד מתארח בתוכנית בנושא אהבה. מגישה ועורכת: נעה אלרן", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2Fnoa_elran%2Fvisual-voice_yaniv_schonfeld_love%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/8/7/a/0/ee82-04c1-4196-9cf1-fd5fde51962b", "play_count": 2, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/kol-hazuti-love.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -1112,7 +1134,9 @@ Venetian Snares - Bashing his hea</div>
                          aria-label="Play Technology and Music"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         onclick="togglePlay('kol-hazuti-tech-music', 'embed', 'https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2Fnoa_elran%2F24-12-09_yaniv_schonfeld_technology_and_music%2F')">
+                         
+                         onclick='(function(s){togglePlay(s.id,s.type,s.embed_url,s);})({"id": "kol-hazuti-tech-music", "title": "Technology and Music", "series": "Kol Hazuti", "date": "2009-12-24", "host": "Noa Elran", "guest": "Yaniv Schonfeld", "tags": ["Archive", "Interview", "Hebrew", "Philosophy"], "genres": ["Talk", "Experimental"], "playlist": "", "description": "An early discussion on the intersection of sound and machine.", "type": "embed", "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1\u0026feed=%2Fnoa_elran%2F24-12-09_yaniv_schonfeld_technology_and_music%2F", "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/6/8/2/0/1853-d3b3-46fc-a36a-4ced915cbb09", "play_count": 19, "show_url": "https://willbearfruits.github.io/kloom-radio/shows/kol-hazuti-tech-music.html"})'
+                         >
                         ▶
                     </div>
                 </div>
@@ -1126,11 +1150,42 @@ Venetian Snares - Bashing his hea</div>
 
     </div>
 
+    <!-- Newsletter -->
+    <div class="newsletter-box">
+        <div class="nb-header">// SUBSCRIBE // GET THE SIGNAL</div>
+        <div class="nb-form">
+            <input type="email" id="nl-email" placeholder="your@email.com">
+            <button onclick="var e=document.getElementById('nl-email');if(e.value){window.location='mailto:kloom@kloom-radio.net?subject=Subscribe&amp;body='+encodeURIComponent('Subscribe me: '+e.value);}">SUBSCRIBE</button>
+        </div>
+    </div>
+
+    <!-- Nav links -->
+    <div class="nav-links">
+        <a href="about.html">ABOUT</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="feed.xml">RSS</a>
+        <a href="https://github.com/willbearfruits/kloom-radio" target="_blank" rel="noopener noreferrer">GITHUB</a>
+    </div>
+
     <footer class="footer">
-        GENERATED: 2026-02-03 08:10:12<br>
+        GENERATED: 2026-02-03 09:47:43<br>
         SYSTEM STATUS: ONLINE<br>
         HOSTED ON MEZO INFRASTRUCTURE
     </footer>
 
+    <!-- ── Persistent Player Bar ── -->
+<div id="kloom-player">
+  <div class="kp-bar">
+    <button class="kp-play-btn" id="kp-play-btn" onclick="KloomPlayer.togglePlay()">▶</button>
+    <div class="kp-info">
+      <div class="kp-title" id="kp-title">—</div>
+      <div class="kp-meta"  id="kp-meta">—</div>
+    </div>
+    <div class="kp-mid" id="kp-mid"></div>
+    <button class="kp-close-btn" onclick="KloomPlayer.close()">✕</button>
+  </div>
+</div>
+    <script src="assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
 </body>
 </html>

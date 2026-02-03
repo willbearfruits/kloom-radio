@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://willbearfruits.github.io/kloom-radio/sitemap.xml

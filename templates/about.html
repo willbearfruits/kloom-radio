@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM // ABOUT</title>
+    <meta name="description" content="About Kloom Lo Kadosh — an underground experimental radio archive. Nothing is Holy.">
+    <link rel="icon" href="assets/favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="feed.xml">
+    <link rel="stylesheet" href="assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+    <style>
+        body {
+            background-color: #0000ff;
+            color: #ffff00;
+            font-family: 'Impact', sans-serif;
+            margin: 0;
+            padding: 10px;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 8vw;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+            mix-blend-mode: difference;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+            transform: rotate(-5deg);
+            white-space: nowrap;
+        }
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .nav a {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-weight: bold;
+            border: 2px solid #fff;
+        }
+        .nav a:hover {
+            background: #fff;
+            color: #000;
+        }
+        .container {
+            margin-top: 15vh;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 100px;
+            padding: 0 20px;
+        }
+        .box {
+            background: #ff00ff;
+            border: 5px solid #000;
+            padding: 30px;
+            box-shadow: 15px 15px 0px #000;
+            transform: skew(-2deg);
+        }
+        .box-header {
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            margin-top: -55px;
+            margin-bottom: 20px;
+            transform: skew(2deg);
+        }
+        .show-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #000;
+            text-shadow: 2px 2px 0px #fff;
+        }
+        .description {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            margin-top: 20px;
+            border: 2px dashed #00ff00;
+            white-space: pre-wrap;
+        }
+        .footer {
+            text-align: center;
+            font-family: monospace;
+            margin-top: 50px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    {% include 'player_partial.html' %}
+
+    <h1>NOTHING<br>IS HOLY</h1>
+
+    <div class="nav">
+        <a href="./">/// BACK_TO_ARCHIVE</a>
+    </div>
+
+    <div class="container">
+        <div class="box">
+            <div class="box-header">// ABOUT // KLOOM LO KADOSH</div>
+
+            <div class="show-title">WHO ARE WE?</div>
+
+            <div class="description">KLOOM LO KADOSH is an underground radio archive.
+
+Experimental sound. Noise. Conversations.
+Hosted out of the void by Yaniv Schonfeld
+and whoever else shows up.
+
+Nothing is Holy.
+The signal is the message.
+
+This archive collects broadcasts, mixtapes,
+and transmissions from the edges —
+things that don't fit anywhere else.
+
+All frequencies welcome.
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <a href="./">ARCHIVE</a>
+        <a href="contact.html">CONTACT</a>
+        <a href="feed.xml">RSS</a>
+    </div>
+
+    <div class="footer">
+        KLOOM LO KADOSH RADIO ARCHIVE // GENERATED {{ generated_at }}
+    </div>
+
+    <script src="assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
+</body>
+</html>

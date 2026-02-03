@@ -33,6 +33,7 @@
             font-family: 'Impact', sans-serif;
             margin: 0;
             padding: 10px;
+            padding-bottom: 90px;
             overflow-x: hidden;
             min-height: 100vh;
         }
@@ -139,8 +140,41 @@
             color: #fff;
         }
     </style>
+    <link rel="icon" href="../assets/favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="../feed.xml">
+    <link rel="stylesheet" href="../assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "PodcastEpisode",
+        "name": "Breakup",
+        "partOfSeries": {
+            "@type": "PodcastSeries",
+            "name": "Kol Hazuti",
+            "url": "https://willbearfruits.github.io/kloom-radio"
+        },
+        "datePublished": "2010-08-12",
+        "description": "קול חזותי/הפרעות בשידור מארחת את יניב שיינפלד בתוכנית שהתחילה בנושא פרידות והמשיכה לכיוונים שונים.. עורכת ומגישה: נעה אלרן.",
+        "url": "https://willbearfruits.github.io/kloom-radio/shows/kol-hazuti-breakup.html"
+    }
+    </script>
 </head>
 <body>
+    <!-- ── Persistent Player Bar ── -->
+<div id="kloom-player">
+  <div class="kp-bar">
+    <button class="kp-play-btn" id="kp-play-btn" onclick="KloomPlayer.togglePlay()">▶</button>
+    <div class="kp-info">
+      <div class="kp-title" id="kp-title">—</div>
+      <div class="kp-meta"  id="kp-meta">—</div>
+    </div>
+    <div class="kp-mid" id="kp-mid"></div>
+    <button class="kp-close-btn" onclick="KloomPlayer.close()">✕</button>
+  </div>
+</div>
+
     <h1>NOTHING<br>IS HOLY</h1>
 
     <div class="nav">
@@ -181,8 +215,18 @@
         </div>
     </div>
 
-    <div class="footer">
-        KLOOM LO KADOSH RADIO ARCHIVE // GENERATED 2026-02-03 08:10:12
+    <div class="nav-links">
+        <a href="../">ARCHIVE</a>
+        <a href="../about.html">ABOUT</a>
+        <a href="../contact.html">CONTACT</a>
+        <a href="../feed.xml">RSS</a>
     </div>
+
+    <div class="footer">
+        KLOOM LO KADOSH RADIO ARCHIVE // GENERATED 2026-02-03 09:47:43
+    </div>
+
+    <script src="../assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
 </body>
 </html>

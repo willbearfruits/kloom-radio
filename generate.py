@@ -13,6 +13,7 @@ DATA_FILE = BASE_DIR / 'data' / 'shows.json'
 TEMPLATE_DIR = BASE_DIR / 'templates'
 OUTPUT_DIR = BASE_DIR
 SHOWS_DIR = OUTPUT_DIR / 'shows'
+BASE_URL  = 'https://willbearfruits.github.io/kloom-radio'
 
 def load_data():
     """Load show data from JSON file with error handling."""
@@ -216,6 +217,86 @@ def generate_og_image(show):
     print(f"Generated OG: assets/og/{show['id']}.png")
 
 
+def tojson_filter(x):
+    """Serialize to JSON, safe for HTML attributes (escapes < > & ')."""
+    rv = json.dumps(x, ensure_ascii=False)
+    rv = rv.replace('&', '\\u0026').replace('<', '\\u003c').replace('>', '\\u003e').replace("'", '\\u0027')
+    return rv
+
+def generate_search_index(shows):
+    """Write client-side search index."""
+    index = [{'id': s['id'], 'title': s.get('title',''),
+              'description': s.get('description',''), 'series': s.get('series',''),
+              'guest': s.get('guest',''), 'tags': s.get('tags',[])} for s in shows]
+    with open(OUTPUT_DIR / 'search-index.json', 'w', encoding='utf-8') as f:
+        json.dump(index, f, ensure_ascii=False)
+    print("Generated: search-index.json")
+
+def generate_rss_feed(shows):
+    """Write RSS 2.0 feed."""
+    now = datetime.datetime.now(datetime.timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
+    items = []
+    for s in shows:
+        try:
+            dt = datetime.datetime.strptime(s['date'], '%Y-%m-%d')
+            pub_date = dt.strftime('%a, %d %b %Y 00:00:00 +0000')
+        except (ValueError, KeyError):
+            pub_date = now
+        desc = (s.get('description') or '').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+        title_esc = (s.get('title') or 'Untitled').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+        items.append(
+            f'    <item>\n'
+            f'      <title>{title_esc}</title>\n'
+            f'      <link>{BASE_URL}/shows/{s["id"]}.html</link>\n'
+            f'      <description>{desc}</description>\n'
+            f'      <pubDate>{pub_date}</pubDate>\n'
+            f'      <category>{s.get("series","")}</category>\n'
+            f'      <guid isPermaLink="true">{BASE_URL}/shows/{s["id"]}.html</guid>\n'
+            f'    </item>'
+        )
+    channel_items = '\n'.join(items)
+    rss = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/Atom">\n'
+        '  <channel>\n'
+        '    <title>KLOOM LO KADOSH</title>\n'
+        f'    <link>{BASE_URL}/</link>\n'
+        '    <description>Nothing Is Holy. Experimental radio archive.</description>\n'
+        f'    <lastBuildDate>{now}</lastBuildDate>\n'
+        f'    <atom:link href="{BASE_URL}/feed.xml" rel="self" type="application/rss+xml"/>\n'
+        + channel_items + '\n'
+        '  </channel>\n'
+        '</rss>\n'
+    )
+    with open(OUTPUT_DIR / 'feed.xml', 'w', encoding='utf-8') as f:
+        f.write(rss)
+    print("Generated: feed.xml")
+
+def generate_sitemap(shows):
+    """Write sitemap.xml."""
+    urls = [
+        f'  <url><loc>{BASE_URL}/</loc></url>',
+        f'  <url><loc>{BASE_URL}/about.html</loc></url>',
+        f'  <url><loc>{BASE_URL}/contact.html</loc></url>',
+    ]
+    for s in shows:
+        urls.append(f'  <url><loc>{BASE_URL}/shows/{s["id"]}.html</loc><lastmod>{s["date"]}</lastmod></url>')
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + '\n'.join(urls) + '\n'
+        '</urlset>\n'
+    )
+    with open(OUTPUT_DIR / 'sitemap.xml', 'w', encoding='utf-8') as f:
+        f.write(sitemap)
+    print("Generated: sitemap.xml")
+
+def generate_robots_txt():
+    """Write robots.txt with sitemap pointer."""
+    with open(OUTPUT_DIR / 'robots.txt', 'w', encoding='utf-8') as f:
+        f.write(f'User-agent: *\nDisallow:\n\nSitemap: {BASE_URL}/sitemap.xml\n')
+    print("Generated: robots.txt")
+
 def generate_site():
     """Generate static site from show data."""
     shows = load_data()
@@ -228,6 +309,15 @@ def generate_site():
     except Exception as e:
         print(f"ERROR: Could not load templates from {TEMPLATE_DIR}: {e}")
         sys.exit(1)
+
+    # Register tojson filter (HTML-attribute-safe JSON)
+    env.filters['tojson'] = tojson_filter
+
+    # Compute absolute URLs so the persistent player works across pages
+    for show in shows:
+        if show.get('src'):
+            show['audio_url'] = BASE_URL + '/' + show['src'].replace('./', '')
+        show['show_url'] = BASE_URL + '/shows/' + show['id'] + '.html'
 
     # 1. Generate Individual Show Pages
     try:
@@ -249,6 +339,8 @@ def generate_site():
             generate_og_image(show)
 
             context = show.copy()
+            context['show']         = show          # full dict for tojson in templates
+            context['BASE_URL']     = BASE_URL
             context['generated_at'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             output = master_template.render(context)
             filename = f"{show['id']}.html"
@@ -262,7 +354,7 @@ def generate_site():
     # 2. Generate Index Page (List Layout)
     try:
         index_template = env.get_template('index_list_glitch.html')
-        index_output = index_template.render(shows=shows, generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        index_output = index_template.render(shows=shows, BASE_URL=BASE_URL, generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         with open(OUTPUT_DIR / 'index.html', 'w', encoding='utf-8') as f:
             f.write(index_output)
@@ -270,6 +362,23 @@ def generate_site():
     except Exception as e:
         print(f"ERROR: Could not generate index page: {e}")
         sys.exit(1)
+
+    # 3. Generate support files
+    generate_search_index(shows)
+    generate_rss_feed(shows)
+    generate_sitemap(shows)
+    generate_robots_txt()
+
+    # 4. Generate static pages (about, contact)
+    for page_name in ['about', 'contact']:
+        try:
+            tmpl = env.get_template(f'{page_name}.html')
+            output = tmpl.render(BASE_URL=BASE_URL, generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            with open(OUTPUT_DIR / f'{page_name}.html', 'w', encoding='utf-8') as f:
+                f.write(output)
+            print(f"Generated: {page_name}.html")
+        except Exception as e:
+            print(f"WARNING: Could not generate {page_name}.html: {e}")
 
 if __name__ == "__main__":
     generate_site()

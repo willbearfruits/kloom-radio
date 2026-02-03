@@ -33,6 +33,7 @@
             font-family: 'Impact', sans-serif;
             margin: 0;
             padding: 10px;
+            padding-bottom: 90px;
             overflow-x: hidden;
             min-height: 100vh;
         }
@@ -139,8 +140,30 @@
             color: #fff;
         }
     </style>
+    <link rel="icon" href="../assets/favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="../feed.xml">
+    <link rel="stylesheet" href="../assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "PodcastEpisode",
+        "name": {{ title | tojson }},
+        "partOfSeries": {
+            "@type": "PodcastSeries",
+            "name": {{ series | tojson }},
+            "url": "{{ BASE_URL }}"
+        },
+        "datePublished": "{{ date }}",
+        "description": {{ description | tojson if description else '""' }},
+        "url": "{{ BASE_URL }}/shows/{{ id }}.html"
+    }
+    </script>
 </head>
 <body>
+    {% include 'player_partial.html' %}
+
     <h1>NOTHING<br>IS HOLY</h1>
 
     <div class="nav">
@@ -168,9 +191,13 @@
             </div>
 
             {% if type == 'local_audio' %}
-            <audio controls style="width: 100%; filter: invert(1); border: 5px solid black;">
-                <source src="../{{ src | replace('./', '') }}" type="audio/mp4">
-            </audio>
+            <button class="show-play-btn"
+                    onclick='KloomPlayer.load({{ show | tojson }})'
+                    aria-label="Play {{ title }}">
+                <span>▶</span> PLAY
+            </button>
+            {% elif type == 'youtube' %}
+            <iframe width="100%" height="315" src="{{ embed_url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             {% else %}
             <iframe width="100%" height="120" src="{{ embed_url }}" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
             {% endif %}
@@ -190,8 +217,18 @@
         </div>
     </div>
 
+    <div class="nav-links">
+        <a href="../">ARCHIVE</a>
+        <a href="../about.html">ABOUT</a>
+        <a href="../contact.html">CONTACT</a>
+        <a href="../feed.xml">RSS</a>
+    </div>
+
     <div class="footer">
         KLOOM LO KADOSH RADIO ARCHIVE // GENERATED {{ generated_at }}
     </div>
+
+    <script src="../assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
 </body>
 </html>
