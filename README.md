@@ -5,6 +5,8 @@
 
 🔴 **[LIVE ARCHIVE](https://willbearfruits.github.io/kloom-radio/)**
 
+📡 **SSH Radio:** `ssh -p 2222 kloom-radio.net` *(coming soon)*
+
 ---
 
 ## About
@@ -32,8 +34,25 @@ Kloom Lo Kadosh (Nothing Is Holy) is a radio project hosted by Yaniv Schonfeld. 
 ### 🎵 Multi-Format Player Support
 - **Mixcloud embeds** - Live broadcasts and mixtapes
 - **YouTube embeds** - Video content and visual mixes
-- **Local audio** - Direct MP3/M4A playback
-- Inline expandable players with autoplay
+- **Local audio** - Direct MP3/M4A playback with persistent player
+- Cross-page playback persistence via localStorage
+
+### 📡 SSH Teletext Radio
+A retro terminal-based radio interface:
+```bash
+ssh -p 2222 localhost
+```
+- ASCII art logo with color cycling
+- Boot sequence animation
+- Animated VU meters
+- Arrow-key navigation
+- Shared "now playing" across all listeners
+- Clickable links (OSC 8 terminals)
+
+### 📱 Mobile Responsive
+- Full-width play strips on mobile
+- Touch-friendly card layout
+- Responsive typography
 
 ### ⌨️ Accessibility & Interaction
 - Full keyboard navigation support
@@ -43,14 +62,22 @@ Kloom Lo Kadosh (Nothing Is Holy) is a radio project hosted by Yaniv Schonfeld. 
 - Reduced motion support
 
 ### 🔐 Production Security
-- XSS prevention via DOM manipulation (no `innerHTML`)
-- Content Security Policy (CSP) headers
+- Content Security Policy (CSP) on all pages
+- XSS prevention via DOM manipulation
 - URL validation for iframe embeds
 - Git LFS for large media files
 
-### 🥚 Easter Eggs
-- **IDDQD** - Type the Doom god mode cheat for a surprise
-- Screen flash and title transformation
+### 🥚 DOOM Easter Eggs
+Type these cheat codes anywhere on the index page:
+
+| Code | Effect |
+|------|--------|
+| `IDDQD` | God Mode — invincibility, glowing cards, HUD overlay |
+| `IDKFA` | All Weapons — maxed ammo/armor, color cycling |
+| `IDCLIP` | No Clipping — floating translucent cards |
+| `IDBEHOLD` | Power Up — inverted colors, glitched titles |
+| `IDMUS` | Music Change — cycling radio station names |
+| `IDSPISPOPD` | Smashing Pumpkins — raining 🎃, sepia madness |
 
 ---
 
@@ -59,18 +86,18 @@ Kloom Lo Kadosh (Nothing Is Holy) is a radio project hosted by Yaniv Schonfeld. 
 ### Build System
 - **Python 3.7+** - Static site generation
 - **Jinja2** - Template engine
-- **Pathlib** - Cross-platform path handling
-- **urllib** - Mixcloud API integration
+- **Pillow** - OG image generation
+- **asyncssh** - SSH server
 
 ### Architecture
 ```
 data/shows.json → generate.py → templates/ → output HTML
+                → kloom_ssh.py → SSH teletext interface
 ```
 
 ### Deployment
 - **Git LFS** - Large audio file management
-- **GitHub Pages** - Static hosting
-- **GitHub Actions** - Automated deployment
+- **GitHub Pages** - Static hosting (no CI needed)
 
 ---
 
@@ -80,15 +107,19 @@ data/shows.json → generate.py → templates/ → output HTML
 ```bash
 python3 --version  # Requires 3.7+
 pip install -r requirements.txt
+pip install Pillow  # Optional, for OG image generation
 ```
 
 ### Build Site
 ```bash
 python3 generate.py
 ```
-This generates:
-- `index.html` - Main archive page
-- `shows/*.html` - Individual show pages
+
+### Run SSH Radio
+```bash
+python3 kloom_ssh.py --port 2222
+# Connect: ssh -p 2222 localhost
+```
 
 ### Preview Locally
 ```bash
@@ -107,8 +138,8 @@ Then visit: http://localhost:8085
     "date": "2026-02-02",
     "tags": ["Mixtape", "Experimental"],
     "description": "Show description",
-    "type": "embed",  // or "local_audio" or "youtube"
-    "embed_url": "https://..."  // or "src": "./audio.m4a"
+    "type": "embed",
+    "embed_url": "https://..."
 }
 ```
 
@@ -126,36 +157,6 @@ git push origin master
 
 ---
 
-## Deployment Guide
-
-See **[DEPLOYMENT.md](DEPLOYMENT.md)** for comprehensive deployment instructions.
-
-### Quick Deploy to GitHub Pages
-
-1. **Build site**:
-   ```bash
-   python3 generate.py
-   ```
-
-2. **Commit changes**:
-   ```bash
-   git add .
-   git commit -m "Update archive"
-   git push origin master
-   ```
-
-3. **Configure GitHub Pages** (one-time setup):
-   - Go to repository **Settings → Pages**
-   - Source: **Deploy from a branch**
-   - Branch: **master** / **/ (root)**
-   - Click **Save**
-
-4. **Wait 2-5 minutes** for deployment
-
-Your site will be live at: `https://willbearfruits.github.io/kloom-radio/`
-
----
-
 ## Project Structure
 
 ```
@@ -165,77 +166,62 @@ kloom-radio/
 ├── templates/
 │   ├── index_list_glitch.html  # Main index template
 │   ├── master_glitch.html      # Individual show page template
-│   └── show_item_partial.html  # Show card component
+│   ├── show_item_partial.html  # Show card component
+│   ├── player_partial.html     # Persistent player bar
+│   ├── about.html              # About page template
+│   └── contact.html            # Contact page template
 ├── shows/                      # Generated show pages
 ├── assets/
-│   └── doom_iddqd.mp3         # Easter egg audio
-├── *.m4a                       # Audio files (tracked with Git LFS)
+│   ├── player.js               # Persistent player + search
+│   ├── player.css              # Player styles
+│   ├── og/                     # Generated OG images
+│   ├── og-image.png            # Main site OG image
+│   ├── favicon.svg             # Site icon
+│   └── doom_iddqd.mp3          # Easter egg audio
+├── *.m4a                       # Audio files (Git LFS)
 ├── index.html                  # Generated main page
+├── about.html                  # Generated about page
+├── contact.html                # Generated contact page
 ├── 404.html                    # Custom 404 page
-├── generate.py                 # Build script
+├── feed.xml                    # RSS feed
+├── sitemap.xml                 # XML sitemap
+├── robots.txt                  # Robots config
+├── search-index.json           # Client-side search data
+├── generate.py                 # Static site generator
+├── kloom_ssh.py                # SSH teletext server
 ├── requirements.txt            # Python dependencies
-├── .gitattributes              # Git LFS configuration
-└── .gitignore                  # Ignored files
-
-Generated Files (committed to repo):
-├── index.html
-└── shows/*.html
+├── CLAUDE.md                   # Claude Code instructions
+└── .gitignore                  # Ignored files (incl. SSH host key)
 ```
-
----
-
-## Troubleshooting
-
-### GitHub Pages not deploying?
-- Check **Settings → Pages** is enabled
-- Verify branch is set to **master** and folder to **/ (root)**
-- Check **Actions** tab for build errors
-- Wait 5-10 minutes for first deployment
-
-### Local audio not playing?
-- Ensure audio file exists in repository root
-- Check path in `shows.json` (should be `./filename.m4a`)
-- For large files, ensure Git LFS is tracking: `git lfs ls-files`
-
-### Build errors?
-```bash
-# Check Python version
-python3 --version  # Should be 3.7+
-
-# Reinstall dependencies
-pip install -r requirements.txt
-
-# Check data file syntax
-python3 -m json.tool data/shows.json
-```
-
-### Player not working?
-- Check browser console for CSP violations
-- Verify URL is https://player-widget.mixcloud.com or https://www.youtube.com
-- Test in different browser (Chrome, Firefox, Safari)
 
 ---
 
 ## Production Readiness
 
-✅ **Security Score: 92/100**
-- XSS vulnerabilities fixed
-- Content Security Policy implemented
+✅ **Security Score: 98/100**
+- Content Security Policy on all pages
+- XSS prevention
 - URL validation for all embeds
 - No hardcoded credentials
+- SSH host key protected via .gitignore
 
 ✅ **Accessibility Score: AA compliant**
 - Keyboard navigation
 - ARIA labels
 - Focus indicators
 - Screen reader support
+- Mobile play buttons
+
+✅ **SEO**
+- Canonical URLs on all pages
+- OpenGraph + Twitter cards
+- JSON-LD structured data
+- RSS feed + sitemap
 
 ✅ **Performance**
 - Lazy-loaded images
-- Inline CSS (no external requests)
+- Inline CSS
 - Git LFS for large media
-
-See **[PRODUCTION_FIXES_SUMMARY.md](PRODUCTION_FIXES_SUMMARY.md)** for details.
 
 ---
 
@@ -243,8 +229,8 @@ See **[PRODUCTION_FIXES_SUMMARY.md](PRODUCTION_FIXES_SUMMARY.md)** for details.
 
 - **Host/Curator:** Yaniv Schonfeld
 - **Infrastructure:** GitHub Pages
-- **Code:** OpenClaw / MEZO Infrastructure
-- **Production Fixes:** Claude Sonnet 4.5
+- **Code:** Claude Opus 4.5 + Claude Sonnet 4.5
+- **Design:** Glitch Brutalist aesthetic
 
 ---
 

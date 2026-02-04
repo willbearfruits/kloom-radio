@@ -244,13 +244,14 @@ def generate_rss_feed(shows):
             pub_date = now
         desc = (s.get('description') or '').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
         title_esc = (s.get('title') or 'Untitled').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
+        series_esc = (s.get('series') or '').replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
         items.append(
             f'    <item>\n'
             f'      <title>{title_esc}</title>\n'
             f'      <link>{BASE_URL}/shows/{s["id"]}.html</link>\n'
             f'      <description>{desc}</description>\n'
             f'      <pubDate>{pub_date}</pubDate>\n'
-            f'      <category>{s.get("series","")}</category>\n'
+            f'      <category>{series_esc}</category>\n'
             f'      <guid isPermaLink="true">{BASE_URL}/shows/{s["id"]}.html</guid>\n'
             f'    </item>'
         )

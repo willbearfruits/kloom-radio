@@ -6,7 +6,8 @@
     <title>KLOOM // {{ title }}</title>
 
     <!-- SEO -->
-    <meta name="description" content="{{ description if description else 'Kloom Lo Kadosh Radio Archive.' }}">
+    <meta name="description" content="{{ description.replace('\n', ' ') if description else 'Kloom Lo Kadosh Radio Archive.' }}">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://thumbnailer.mixcloud.com https://i.ytimg.com data:; frame-src https://player-widget.mixcloud.com https://www.youtube.com; media-src 'self' blob:; connect-src 'self' https://api.mixcloud.com;">
     <meta name="author" content="Yaniv Schonfeld">
 
     <!-- OpenGraph / Facebook -->
@@ -141,6 +142,7 @@
         }
     </style>
     <link rel="icon" href="../assets/favicon.svg">
+    <link rel="canonical" href="{{ BASE_URL }}/shows/{{ id }}.html">
     <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="../feed.xml">
     <link rel="stylesheet" href="../assets/player.css">
     <!-- Plausible Analytics – uncomment and set your domain -->

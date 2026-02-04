@@ -24,7 +24,7 @@
                         </a>
                     </div>
 
-                    <!-- Play Trigger -->
+                    <!-- Play Trigger (Desktop) -->
                     <div class="action"
                          role="button"
                          tabindex="0"
@@ -38,5 +38,19 @@
                          {% endif %}>
                         ▶
                     </div>
+                </div>
+
+                <!-- Mobile Play Strip -->
+                <div class="mobile-play"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Play {{ show.title }}"
+                     onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
+                     {% if show.type == 'local_audio' %}
+                     onclick='KloomPlayer.load({{ show | tojson }})'
+                     {% else %}
+                     onclick='window.location="shows/{{ show.id }}.html"'
+                     {% endif %}>
+                    ▶ PLAY
                 </div>
             </div>

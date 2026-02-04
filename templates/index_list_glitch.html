@@ -29,6 +29,7 @@
 
     <!-- Favicon & feeds -->
     <link rel="icon" href="assets/favicon.svg">
+    <link rel="canonical" href="https://willbearfruits.github.io/kloom-radio/">
     <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="feed.xml">
     <link rel="stylesheet" href="assets/player.css">
     <!-- Plausible Analytics – uncomment and set your domain -->
@@ -298,6 +299,24 @@
             }
         }
 
+        /* Mobile play strip - hidden on desktop */
+        .mobile-play {
+            display: none;
+            width: 100%;
+            background: #00ff00;
+            border-top: 5px solid #000;
+            padding: 15px;
+            text-align: center;
+            font-family: 'Impact', sans-serif;
+            font-size: 1.5rem;
+            color: #000;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .mobile-play:active {
+            background: #fff;
+        }
+
         /* Mobile */
         @media (max-width: 600px) {
             .card-top {
@@ -310,52 +329,430 @@
                 border-bottom: 5px solid #000;
             }
             .action {
-                display: none; /* Hide play button on mobile, rely on page link? Or move it */
+                display: none;
             }
-            /* Make entire card clickable for page on mobile? or add mobile play button */
+            .mobile-play {
+                display: block;
+            }
+            h1 {
+                font-size: 12vw;
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* DOOM MODE STYLES */
+        .doom-active {
+            animation: doom-pulse 0.5s infinite;
+        }
+        @keyframes doom-pulse {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(20deg); }
+        }
+        .doom-face {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            font-size: 4rem;
+            z-index: 10000;
+            text-shadow: 3px 3px 0 #000;
+            animation: doom-face-bob 0.3s infinite;
+            user-select: none;
+            pointer-events: none;
+        }
+        @keyframes doom-face-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .doom-hud {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            font-family: 'Impact', sans-serif;
+            font-size: 1.5rem;
+            color: #ff0000;
+            text-shadow: 2px 2px 0 #000;
+            z-index: 10000;
+            user-select: none;
+            pointer-events: none;
+        }
+        .doom-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Impact', sans-serif;
+            font-size: 4rem;
+            color: #ff0000;
+            text-shadow: 4px 4px 0 #000, -2px -2px 0 #ffff00;
+            z-index: 10001;
+            animation: doom-msg-in 0.3s ease-out;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        @keyframes doom-msg-in {
+            0% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.1) 0px,
+                rgba(0,0,0,0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .glitch-overlay.active {
+            opacity: 1;
+            animation: scanline-move 0.1s linear infinite;
+        }
+        @keyframes scanline-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 4px; }
+        }
+        .screen-shake {
+            animation: shake 0.1s linear infinite;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 1px); }
+            50% { transform: translate(2px, -1px); }
+            75% { transform: translate(-1px, 2px); }
         }
     </style>
     <script>
-        // DOOM GOD MODE (IDDQD)
-        let keySequence = [];
-        const konamiCode = ['i', 'd', 'd', 'q', 'd'];
-        
-        document.addEventListener('keydown', (e) => {
-            keySequence.push(e.key.toLowerCase());
-            keySequence = keySequence.slice(-5); // Keep last 5 keys
+        // ████████████████████████████████████████████████████████████
+        // █▄─▄▄▀█─▄▄─█─▄▄─█▄─▀█▀─▄███─▄▄▄─█─█─█▄─▄▄─██▀▄─██─▄─▄─█─▄▄▄▄█
+        // ██─██─█─██─█─██─██─█▄█─████─███▀█─▄─██─▄█▀██─▀─████─███▄▄▄▄─█
+        // ▀▄▄▄▄▀▀▄▄▄▀▀▄▄▄▀▀▄▄▄▀▄▄▄▀▀▀▄▄▄▄▄▀▄▀▄▀▄▄▄▄▄▀▄▄▀▄▄▀▀▄▄▄▀▀▄▄▄▄▄▀
+        // DOOM CHEAT CODES - Type these anywhere on the page:
+        //   IDDQD  - God Mode (invincibility)
+        //   IDKFA  - All weapons, full ammo, keys
+        //   IDCLIP - No clipping (walk through walls)
+        //   IDBEHOLD - Power up menu
+        //   IDMUS   - Music change
+        //   IDSPISPOPD - Smashing Pumpkins mode
 
-            if (JSON.stringify(keySequence) === JSON.stringify(konamiCode)) {
-                activateGodMode();
+        const DOOM = {
+            buffer: '',
+            maxLen: 10,
+            active: { god: false, weapons: false, clip: false, pumped: false },
+            health: 100,
+            armor: 200,
+            ammo: 999,
+            face: '😐',
+            faceStates: ['😐', '😠', '😤', '🤬', '😈', '💀', '🔥'],
+
+            cheats: {
+                'iddqd':      { name: 'GOD MODE',           color: '#ffff00', action: 'godMode' },
+                'idkfa':      { name: 'VERY HAPPY AMMO',    color: '#00ff00', action: 'allWeapons' },
+                'idclip':     { name: 'NO CLIPPING',        color: '#00ffff', action: 'noClip' },
+                'idbehold':   { name: 'POWER UP!',          color: '#ff00ff', action: 'powerUp' },
+                'idmus':      { name: 'MUSIC CHANGE',       color: '#ff8800', action: 'musicChange' },
+                'idspispopd': { name: 'SMASHING PUMPKINS',  color: '#ff0000', action: 'pumpkins' },
+            },
+
+            init() {
+                // Create persistent elements
+                this.glitchOverlay = document.createElement('div');
+                this.glitchOverlay.className = 'glitch-overlay';
+                document.body.appendChild(this.glitchOverlay);
+
+                document.addEventListener('keydown', (e) => this.onKey(e));
+                console.log('%c🔫 DOOM CHEATS ACTIVE', 'color: #ff0000; font-size: 20px; font-weight: bold;');
+                console.log('%cIDDQD IDKFA IDCLIP IDBEHOLD IDMUS IDSPISPOPD', 'color: #888; font-size: 12px;');
+            },
+
+            onKey(e) {
+                if (e.target.tagName === 'INPUT') return;
+                this.buffer += e.key.toLowerCase();
+                this.buffer = this.buffer.slice(-this.maxLen);
+
+                for (const [code, cheat] of Object.entries(this.cheats)) {
+                    if (this.buffer.endsWith(code)) {
+                        this[cheat.action](cheat);
+                        this.buffer = '';
+                        break;
+                    }
+                }
+            },
+
+            flash(color, duration = 200) {
+                const flash = document.createElement('div');
+                Object.assign(flash.style, {
+                    position: 'fixed', top: '0', left: '0',
+                    width: '100vw', height: '100vh',
+                    background: color, zIndex: '9999',
+                    pointerEvents: 'none', opacity: '0.7'
+                });
+                document.body.appendChild(flash);
+                setTimeout(() => {
+                    flash.style.transition = 'opacity 0.5s';
+                    flash.style.opacity = '0';
+                    setTimeout(() => flash.remove(), 500);
+                }, duration);
+            },
+
+            showMessage(text, color) {
+                // Remove existing message
+                document.querySelectorAll('.doom-msg').forEach(m => m.remove());
+
+                const msg = document.createElement('div');
+                msg.className = 'doom-msg';
+                msg.style.color = color;
+                msg.textContent = text;
+                document.body.appendChild(msg);
+
+                setTimeout(() => {
+                    msg.style.transition = 'opacity 0.5s, transform 0.5s';
+                    msg.style.opacity = '0';
+                    msg.style.transform = 'translate(-50%, -50%) scale(0.5)';
+                    setTimeout(() => msg.remove(), 500);
+                }, 1500);
+            },
+
+            shake(duration = 500) {
+                document.body.classList.add('screen-shake');
+                setTimeout(() => document.body.classList.remove('screen-shake'), duration);
+            },
+
+            showHUD() {
+                if (document.querySelector('.doom-hud')) return;
+
+                const hud = document.createElement('div');
+                hud.className = 'doom-hud';
+                hud.innerHTML = `
+                    <div>HEALTH: <span id="doom-health">${this.health}</span>%</div>
+                    <div>ARMOR: <span id="doom-armor">${this.armor}</span>%</div>
+                    <div>AMMO: <span id="doom-ammo">${this.ammo}</span></div>
+                `;
+                document.body.appendChild(hud);
+
+                const face = document.createElement('div');
+                face.className = 'doom-face';
+                face.id = 'doom-face';
+                face.textContent = this.face;
+                document.body.appendChild(face);
+            },
+
+            updateFace(state) {
+                this.face = state;
+                const faceEl = document.getElementById('doom-face');
+                if (faceEl) faceEl.textContent = state;
+            },
+
+            godMode(cheat) {
+                this.active.god = !this.active.god;
+                const audio = new Audio('assets/doom_iddqd.mp3');
+                audio.play().catch(() => {});
+
+                this.flash('rgba(255, 255, 0, 0.7)');
+                this.shake(300);
+                this.showMessage(this.active.god ? 'DEGREELESSNESS MODE ON' : 'GOD MODE OFF', cheat.color);
+                this.showHUD();
+
+                if (this.active.god) {
+                    this.health = 100;
+                    this.updateFace('😈');
+                    document.querySelector('h1').textContent = 'GOD MODE ACTIVE';
+                    document.querySelector('h1').style.color = '#ffff00';
+                    document.body.classList.add('doom-active');
+                    this.glitchOverlay.classList.add('active');
+
+                    // Make all cards glow
+                    document.querySelectorAll('.show-item').forEach(card => {
+                        card.style.boxShadow = '0 0 30px #ffff00, 10px 10px 0px #000';
+                    });
+                } else {
+                    document.querySelector('h1').textContent = 'NOTHING IS HOLY';
+                    document.querySelector('h1').style.color = '';
+                    document.body.classList.remove('doom-active');
+                    this.glitchOverlay.classList.remove('active');
+                    this.updateFace('😐');
+                    document.querySelectorAll('.show-item').forEach(card => {
+                        card.style.boxShadow = '';
+                    });
+                }
+            },
+
+            allWeapons(cheat) {
+                this.active.weapons = true;
+                this.ammo = 999;
+                this.armor = 200;
+
+                this.flash('rgba(0, 255, 0, 0.7)');
+                this.shake(200);
+                this.showMessage('VERY HAPPY AMMO ADDED', cheat.color);
+                this.showHUD();
+                this.updateFace('🤬');
+
+                // Update HUD
+                const ammoEl = document.getElementById('doom-ammo');
+                const armorEl = document.getElementById('doom-armor');
+                if (ammoEl) ammoEl.textContent = this.ammo;
+                if (armorEl) armorEl.textContent = this.armor;
+
+                // Rapid color cycle on cards
+                let cycles = 0;
+                const interval = setInterval(() => {
+                    document.querySelectorAll('.show-item').forEach((card, i) => {
+                        card.style.background = ['#ff00ff', '#00ff00', '#ffff00', '#00ffff'][Math.floor(Math.random() * 4)];
+                    });
+                    cycles++;
+                    if (cycles > 10) {
+                        clearInterval(interval);
+                        document.querySelectorAll('.show-item').forEach(card => {
+                            card.style.background = '';
+                        });
+                    }
+                }, 100);
+            },
+
+            noClip(cheat) {
+                this.active.clip = !this.active.clip;
+                this.flash('rgba(0, 255, 255, 0.7)');
+                this.showMessage(this.active.clip ? 'NO CLIPPING MODE ON' : 'CLIPPING ON', cheat.color);
+                this.showHUD();
+
+                if (this.active.clip) {
+                    this.updateFace('👻');
+                    // Make cards semi-transparent and floaty
+                    document.querySelectorAll('.show-item').forEach((card, i) => {
+                        card.style.opacity = '0.7';
+                        card.style.animation = `float ${1 + Math.random()}s ease-in-out infinite`;
+                    });
+                    // Add float keyframes if not exists
+                    if (!document.getElementById('float-style')) {
+                        const style = document.createElement('style');
+                        style.id = 'float-style';
+                        style.textContent = '@keyframes float { 0%, 100% { transform: skew(-1deg) translateY(0); } 50% { transform: skew(-1deg) translateY(-10px); } }';
+                        document.head.appendChild(style);
+                    }
+                } else {
+                    this.updateFace(this.active.god ? '😈' : '😐');
+                    document.querySelectorAll('.show-item').forEach(card => {
+                        card.style.opacity = '';
+                        card.style.animation = '';
+                    });
+                }
+            },
+
+            powerUp(cheat) {
+                this.flash('rgba(255, 0, 255, 0.7)');
+                this.shake(500);
+                this.showMessage('PUMPED UP!', cheat.color);
+                this.showHUD();
+                this.updateFace('🔥');
+                this.active.pumped = true;
+
+                // Invert colors temporarily
+                document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+                setTimeout(() => {
+                    document.body.style.filter = '';
+                    this.updateFace(this.active.god ? '😈' : '😐');
+                }, 3000);
+
+                // Glitch text effect on all titles
+                document.querySelectorAll('.title').forEach(title => {
+                    const original = title.textContent;
+                    let glitchCount = 0;
+                    const glitchInterval = setInterval(() => {
+                        title.textContent = original.split('').map(c =>
+                            Math.random() > 0.7 ? String.fromCharCode(33 + Math.random() * 94) : c
+                        ).join('');
+                        glitchCount++;
+                        if (glitchCount > 20) {
+                            clearInterval(glitchInterval);
+                            title.textContent = original;
+                        }
+                    }, 50);
+                });
+            },
+
+            musicChange(cheat) {
+                this.flash('rgba(255, 136, 0, 0.5)');
+                this.showMessage('♪ CHANGING MUSIC ♪', cheat.color);
+
+                // Cycle through different "radio stations"
+                const stations = ['RADIO VOID', 'NOISE FM', 'GLITCH.WAV', 'STATIC 666', 'HOLY FREQ'];
+                const subtitle = document.querySelector('.subtitle');
+                if (subtitle) {
+                    let i = 0;
+                    const cycleInterval = setInterval(() => {
+                        subtitle.textContent = stations[i % stations.length];
+                        i++;
+                        if (i >= stations.length * 2) {
+                            clearInterval(cycleInterval);
+                            subtitle.textContent = 'KLOOM LO KADOSH RADIO ARCHIVE';
+                        }
+                    }, 200);
+                }
+            },
+
+            pumpkins(cheat) {
+                // Billy Corgan would be proud
+                this.flash('rgba(255, 0, 0, 0.9)', 100);
+                this.flash('rgba(255, 0, 0, 0.9)', 100);
+                this.shake(1000);
+                this.showMessage('SMASHING PUMPKINS INTO SMALL PILES OF PUTRID DEBRIS', cheat.color);
+                this.showHUD();
+                this.updateFace('🎃');
+
+                // Add pumpkins everywhere
+                for (let i = 0; i < 20; i++) {
+                    const pumpkin = document.createElement('div');
+                    pumpkin.textContent = '🎃';
+                    pumpkin.style.cssText = `
+                        position: fixed;
+                        font-size: ${30 + Math.random() * 40}px;
+                        left: ${Math.random() * 100}vw;
+                        top: -50px;
+                        z-index: 9999;
+                        pointer-events: none;
+                        animation: pumpkin-fall ${2 + Math.random() * 3}s linear forwards;
+                    `;
+                    document.body.appendChild(pumpkin);
+                    setTimeout(() => pumpkin.remove(), 5000);
+                }
+
+                // Add pumpkin fall animation if not exists
+                if (!document.getElementById('pumpkin-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'pumpkin-style';
+                    style.textContent = '@keyframes pumpkin-fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(720deg); } }';
+                    document.head.appendChild(style);
+                }
+
+                // Temporarily change all images to pumpkins
+                const images = document.querySelectorAll('.thumb img');
+                const originals = [];
+                images.forEach((img, i) => {
+                    originals[i] = img.src;
+                    img.style.filter = 'sepia(100%) hue-rotate(-50deg) saturate(3)';
+                });
+
+                setTimeout(() => {
+                    images.forEach((img, i) => {
+                        img.style.filter = '';
+                    });
+                    this.updateFace(this.active.god ? '😈' : '😐');
+                }, 4000);
             }
-        });
+        };
 
-        function activateGodMode() {
-            // Play Sound
-            const audio = new Audio('assets/doom_iddqd.mp3');
-            audio.play();
-
-            // Flash Screen Yellow (God Mode Eyes)
-            const flash = document.createElement('div');
-            flash.style.position = 'fixed';
-            flash.style.top = '0';
-            flash.style.left = '0';
-            flash.style.width = '100vw';
-            flash.style.height = '100vh';
-            flash.style.background = 'rgba(255, 255, 0, 0.5)';
-            flash.style.zIndex = '9999';
-            flash.style.pointerEvents = 'none';
-            document.body.appendChild(flash);
-            
-            setTimeout(() => {
-                flash.style.transition = 'opacity 1s';
-                flash.style.opacity = '0';
-                setTimeout(() => flash.remove(), 1000);
-            }, 200);
-
-            // Change Title
-            document.querySelector('h1').innerText = "GOD MODE ACTIVE";
-            document.querySelector('h1').style.color = "#ffff00";
-        }
+        // Initialize DOOM cheats on page load
+        document.addEventListener('DOMContentLoaded', () => DOOM.init());
 
         /* embed / youtube cards navigate to their show page on play;
            only local_audio uses KloomPlayer.load() inline */

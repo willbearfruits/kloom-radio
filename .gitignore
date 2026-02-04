@@ -32,3 +32,6 @@ Desktop.ini
 *.log
 .env
 .env.local
+
+# SSH server runtime artifacts
+.kloom_ssh_host_key
