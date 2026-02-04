@@ -37,6 +37,13 @@
 .kp-resume { color:#00ff00; font-family:monospace; font-size:.75rem; font-weight:bold; text-align:center; padding:2px 0; animation:kp-pulse 1.4s ease-in-out infinite; }
 @keyframes kp-pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
+/* embed wrapper (Mixcloud/YouTube in persistent player) */
+.kp-embed-wrap { display:flex; flex-direction:column; gap:4px; }
+.kp-embed-wrap iframe { border:none; background:#111; max-height:60px; }
+.kp-embed-progress { margin-top:2px; }
+.kp-youtube-wrap iframe { pointer-events:none; }
+.kp-youtube-wrap #kp-youtube { background:#111; }
+
 /* embed / youtube "now playing" badge */
 .kp-badge {
   display:inline-flex; align-items:center; gap:6px;

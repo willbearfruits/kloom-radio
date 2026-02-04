@@ -31,11 +31,7 @@
                          aria-label="Play {{ show.title }}"
                          aria-pressed="false"
                          onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                         {% if show.type == 'local_audio' %}
-                         onclick='KloomPlayer.load({{ show | tojson }})'
-                         {% else %}
-                         onclick='window.location="shows/{{ show.id }}.html"'
-                         {% endif %}>
+                         onclick='KloomPlayer.load({{ show | tojson }})'>
                         ▶
                     </div>
                 </div>
@@ -46,11 +42,7 @@
                      tabindex="0"
                      aria-label="Play {{ show.title }}"
                      onkeypress="if(event.key==='Enter' || event.key===' ') { event.preventDefault(); this.click(); }"
-                     {% if show.type == 'local_audio' %}
-                     onclick='KloomPlayer.load({{ show | tojson }})'
-                     {% else %}
-                     onclick='window.location="shows/{{ show.id }}.html"'
-                     {% endif %}>
+                     onclick='KloomPlayer.load({{ show | tojson }})'>
                     ▶ PLAY
                 </div>
             </div>

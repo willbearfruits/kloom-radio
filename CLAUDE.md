@@ -38,11 +38,13 @@ No CI pipeline — GitHub Pages serves master at root directly. `.nojekyll` is p
 
 ### Show types & player behaviour
 
-Shows in `shows.json` have a `type` field:
+Shows in `shows.json` have a `type` field. **All types play through the persistent bottom-bar player** and survive page navigation via `localStorage`:
 
-- **`local_audio`** — file hosted in the repo (`src` field). Plays through the persistent bottom-bar player (`KloomPlayer.load()`). Survives page navigation via `localStorage`; on restore a pulsing "TAP TO RESUME" hint appears because browsers block autoplay without a gesture.
-- **`embed`** — Mixcloud iframe. Audio lives inside the iframe and cannot be routed through our `<Audio>` element. On the index, clicking play navigates to the show page (which renders the embed at full width). No cross-page persistence.
-- **`youtube`** — YouTube iframe. Same constraints as embed.
+- **`local_audio`** — file hosted in the repo (`src` field). Uses HTML5 `<audio>` element.
+- **`embed`** — Mixcloud iframe. Uses the [Mixcloud Widget API](https://www.mixcloud.com/developers/widget/) loaded dynamically.
+- **`youtube`** — YouTube iframe. Uses the [YouTube IFrame API](https://developers.google.com/youtube/iframe_api_reference) loaded dynamically.
+
+On page restore, a pulsing "TAP TO RESUME" hint appears because browsers block autoplay without a gesture. The player saves position every 3s and restores it on reload.
 
 ### SSH Teletext Radio (`kloom_ssh.py`)
 
@@ -118,6 +120,6 @@ The cheat system is defined in the `<script>` block in `index_list_glitch.html` 
 ## Security notes
 
 - CSP (Content-Security-Policy) is set on all pages via `<meta>` tag.
-- `'unsafe-inline'` is required in `script-src` due to `onclick` handlers — this is an accepted trade-off.
+- `script-src` allows `'unsafe-inline'` (for `onclick` handlers) plus `widget.mixcloud.com` and `www.youtube.com` (for the persistent player APIs).
 - All user-facing URLs are validated (only Mixcloud, YouTube, or local paths allowed).
 - The SSH server requires no authentication by design (it's a public radio).
