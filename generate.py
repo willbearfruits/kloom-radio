@@ -94,15 +94,19 @@ def generate_og_image(show):
     )
 
     def load_font(size):
-        for p in ["/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        # Try Hebrew-supporting fonts first (FreeSans has excellent Hebrew support)
+        for p in ["/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+                  "/usr/share/fonts/truetype/noto/NotoSansHebrew-Bold.ttf",
                   "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]:
             if os.path.exists(p):
                 return ImageFont.truetype(p, size)
         return ImageFont.load_default()
 
     def load_mono(size):
-        for p in ["/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf",
-                  "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"]:
+        # Try Hebrew-supporting fonts first (FreeSans has excellent Hebrew support)
+        for p in ["/usr/share/fonts/truetype/freefont/FreeSans.ttf",
+                  "/usr/share/fonts/truetype/noto/NotoSansHebrew-Regular.ttf",
+                  "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]:
             if os.path.exists(p):
                 return ImageFont.truetype(p, size)
         return ImageFont.load_default()
