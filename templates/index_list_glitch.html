@@ -784,6 +784,17 @@
         </div>
         {% endif %}
 
+        <!-- Section: YOU ARE NOT HOLY (Guest Shows) -->
+        {% set you_are_not_holy = shows | selectattr('series', 'equalto', 'You Are Not Holy') | list %}
+        {% if you_are_not_holy|length > 0 %}
+        <div class="section-header" style="margin-top: 60px;">// YOU ARE NOT HOLY גם אתה לא קדוש</div>
+        <div class="show-list">
+            {% for show in you_are_not_holy %}
+                {% include "show_item_partial.html" %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <!-- Section: ARCHIVE / MIXTAPES (Nothing Is Holy) -->
         {% set mixtapes = shows | selectattr('series', 'equalto', 'Nothing Is Holy') | list %}
         {% if mixtapes|length > 0 %}

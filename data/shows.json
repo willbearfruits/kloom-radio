@@ -138,14 +138,130 @@
         "play_count": 31
     },
     {
-        "id": "creative-destruction-2025-12-02",
-        "title": "The Creative Destruction Show",
-        "series": "Nothing Is Holy",
+        "id": "you-are-not-holy-shai-komarov-2025-12-09",
+        "title": "גם שי קומרוב לא קדוש",
+        "series": "You Are Not Holy",
+        "date": "2025-12-09",
+        "guest": "Shai Komarov",
+        "tags": [
+            "Live",
+            "Guest Show",
+            "Eclectic",
+            "Folk",
+            "Experimental"
+        ],
+        "genres": [
+            "Eclectic",
+            "Folk",
+            "Art Rock"
+        ],
+        "playlist": [
+            {
+                "time": "00:00",
+                "artist": "Intro Talking",
+                "track": "Intro Talking"
+            },
+            {
+                "time": "08:04",
+                "artist": "Richard Dawson",
+                "track": "A Parents address to his firstborn son on the day of his birth"
+            },
+            {
+                "time": "15:57",
+                "artist": "David Bowie",
+                "track": "Time"
+            },
+            {
+                "time": "21:15",
+                "artist": "Cardiacs",
+                "track": "Eden On The Air"
+            },
+            {
+                "time": "26:42",
+                "artist": "David Byrne",
+                "track": "I should watch tv"
+            },
+            {
+                "time": "30:40",
+                "artist": "David Sylvian",
+                "track": "Late night shopping"
+            },
+            {
+                "time": "37:09",
+                "artist": "Mount Eerie",
+                "track": "Real Death"
+            },
+            {
+                "time": "42:55",
+                "artist": "Shai Komarov (live)",
+                "track": "דובדבן"
+            },
+            {
+                "time": "46:20",
+                "artist": "The Incredible String Band",
+                "track": "Nightfall"
+            },
+            {
+                "time": "48:45",
+                "artist": "The Books",
+                "track": "The lemon of pink 1"
+            },
+            {
+                "time": "53:49",
+                "artist": "The Kinks",
+                "track": "Strangers"
+            },
+            {
+                "time": "1:02:28",
+                "artist": "Shai Komarov (live)",
+                "track": "ארך הטיפש בטיפשותו"
+            },
+            {
+                "time": "1:06:36",
+                "artist": "Jockstrap",
+                "track": "Concrete over water"
+            },
+            {
+                "time": "1:11:49",
+                "artist": "Shai Komarov (live)",
+                "track": "נבל"
+            },
+            {
+                "time": "1:16:39",
+                "artist": "Cardiacs",
+                "track": "Busty Beez"
+            },
+            {
+                "time": "1:25:23",
+                "artist": "Mitski",
+                "track": "I will"
+            },
+            {
+                "time": "1:35:12",
+                "artist": "Yehu Yaron",
+                "track": "שלושה שירים שלא נכתבו (חלק א)"
+            },
+            {
+                "time": "1:43:51",
+                "artist": "Hilla Ruach",
+                "track": "Haifa"
+            }
+        ],
+        "description": "Shai Komarov is not holy. Live performances and conversation exploring folk, art rock, and experimental sounds.",
+        "type": "embed",
+        "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20251209-124921%2F",
+        "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/6/7/3/1/b86a-ee47-42fa-8a57-ef0eec8ec078",
+        "play_count": 0
+    },
+    {
+        "id": "you-are-not-holy-shiri-shifman-2025-12-02",
+        "title": "גם שירי ענת שיפמן לא קדושה",
+        "series": "You Are Not Holy",
         "date": "2025-12-02",
         "guest": "Shiri Anat Shifman",
         "tags": [
             "Live",
-            "Creative Destruction",
+            "Guest Show",
             "Skate Culture",
             "Punk",
             "Israeli Music"
@@ -155,7 +271,7 @@
             "Local"
         ],
         "playlist": "",
-        "description": "Hosted with Shiri Anat Shifman. A deep dive into skaters, punks, and the local Israeli music scene.",
+        "description": "Shiri Anat Shifman is not holy. A deep dive into skaters, punks, and the local Israeli music scene.",
         "type": "embed",
         "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20251202-141411%2F",
         "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/extaudio/f/0/7/f/17d5-f5ff-45ee-b457-0e2fedcee197",

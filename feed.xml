@@ -4,7 +4,7 @@
     <title>KLOOM LO KADOSH</title>
     <link>https://willbearfruits.github.io/kloom-radio/</link>
     <description>Nothing Is Holy. Experimental radio archive.</description>
-    <lastBuildDate>Wed, 04 Feb 2026 01:10:50 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Feb 2026 18:59:55 +0000</lastBuildDate>
     <atom:link href="https://willbearfruits.github.io/kloom-radio/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>הבוטים הקימו דת ברשת החברתית הסודית</title>
@@ -15,12 +15,20 @@
       <guid isPermaLink="true">https://willbearfruits.github.io/kloom-radio/shows/bots-religion.html</guid>
     </item>
     <item>
-      <title>The Creative Destruction Show</title>
-      <link>https://willbearfruits.github.io/kloom-radio/shows/creative-destruction-2025-12-02.html</link>
-      <description>Hosted with Shiri Anat Shifman. A deep dive into skaters, punks, and the local Israeli music scene.</description>
+      <title>גם שי קומרוב לא קדוש</title>
+      <link>https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-shai-komarov-2025-12-09.html</link>
+      <description>Shai Komarov is not holy. Live performances and conversation exploring folk, art rock, and experimental sounds.</description>
+      <pubDate>Tue, 09 Dec 2025 00:00:00 +0000</pubDate>
+      <category>You Are Not Holy</category>
+      <guid isPermaLink="true">https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-shai-komarov-2025-12-09.html</guid>
+    </item>
+    <item>
+      <title>גם שירי ענת שיפמן לא קדושה</title>
+      <link>https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-shiri-shifman-2025-12-02.html</link>
+      <description>Shiri Anat Shifman is not holy. A deep dive into skaters, punks, and the local Israeli music scene.</description>
       <pubDate>Tue, 02 Dec 2025 00:00:00 +0000</pubDate>
-      <category>Nothing Is Holy</category>
-      <guid isPermaLink="true">https://willbearfruits.github.io/kloom-radio/shows/creative-destruction-2025-12-02.html</guid>
+      <category>You Are Not Holy</category>
+      <guid isPermaLink="true">https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-shiri-shifman-2025-12-02.html</guid>
     </item>
     <item>
       <title>No Sleep For The Wicked</title>

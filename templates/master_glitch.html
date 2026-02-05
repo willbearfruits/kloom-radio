@@ -210,7 +210,31 @@
             </div>
             {% endif %}
             
-            {% if playlist %}
+            {% if playlist and playlist is iterable and playlist is not string %}
+            <div class="description" style="margin-top: 30px; border-color: #ffff00; color: #fff;">
+                <div style="background: #ffff00; color: #000; display: inline-block; padding: 2px 5px; margin-bottom: 10px; font-weight: bold;">// TRACKLIST</div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ffff00;">
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">#</th>
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">TIME</th>
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">ARTIST</th>
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">TRACK</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for track in playlist %}
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">{{ loop.index }}</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">{{ track.time }}</td>
+                            <td style="padding: 5px;">{{ track.artist }}</td>
+                            <td style="padding: 5px; color: #fff;">{{ track.track }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% elif playlist %}
             <div class="description" style="margin-top: 30px; border-color: #ffff00; color: #fff;">
                 <div style="background: #ffff00; color: #000; display: inline-block; padding: 2px 5px; margin-bottom: 10px; font-weight: bold;">// PLAYLIST</div>
                 <pre style="white-space: pre-wrap; margin: 0;">{{ playlist }}</pre>

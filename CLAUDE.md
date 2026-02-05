@@ -71,8 +71,16 @@ The server auto-generates an Ed25519 host key on first run (`.kloom_ssh_host_key
    - For local audio: `"type": "local_audio", "src": "./{filename}"`. Place the audio file in the repo root.
    - For Mixcloud: `"type": "embed", "embed_url": "https://player-widget.mixcloud.com/…"`. Image/tags are auto-fetched on next build if missing.
    - For YouTube: `"type": "youtube", "embed_url": "https://www.youtube.com/embed/{id}"`.
-2. Run `python3 generate.py`.
-3. Commit and push.
+2. **Optional**: Add a `playlist` array for tracklist with timecodes:
+   ```json
+   "playlist": [
+       {"time": "00:00", "artist": "Artist Name", "track": "Track Title"},
+       {"time": "12:34", "artist": "Another Artist", "track": "Another Track"}
+   ]
+   ```
+   The template will render this as a formatted table on the show page. Use an empty string `""` or omit the field if no playlist.
+3. Run `python3 generate.py`.
+4. Commit and push.
 
 ## Design constraints
 
