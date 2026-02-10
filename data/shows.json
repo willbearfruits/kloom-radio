@@ -254,6 +254,109 @@
         "play_count": 0
     },
     {
+        "id": "you-are-not-holy-chefifeau-2026-01-20",
+        "title": "גם שפיפו לא קדוש",
+        "series": "You Are Not Holy",
+        "date": "2026-01-20",
+        "guest": "chefifeau",
+        "tags": [
+            "Live",
+            "Guest Show",
+            "Rock",
+            "Punk",
+            "Mediterranean"
+        ],
+        "genres": [
+            "Rock",
+            "Punk",
+            "Mediterranean",
+            "Indie folk",
+            "Freak folk"
+        ],
+        "playlist": [
+            {
+                "time": "00:00",
+                "artist": "Xerox candy bar",
+                "track": "Fire walk with me"
+            },
+            {
+                "time": "12:42",
+                "artist": "Scout Niblett",
+                "track": "Lucy Lucifer"
+            },
+            {
+                "time": "15:22",
+                "artist": "Junkyard Kids",
+                "track": "Junkyard Dream"
+            },
+            {
+                "time": "20:37",
+                "artist": "manic street preacher",
+                "track": "still snowing in saporo"
+            },
+            {
+                "time": "32:48",
+                "artist": "משה כהן",
+                "track": "נדרתי נדר"
+            },
+            {
+                "time": "47:45",
+                "artist": "ferdi tayfur",
+                "track": "sanmaki yasiyorum"
+            },
+            {
+                "time": "55:34",
+                "artist": "Pal Kalmar & Miklos Sebo",
+                "track": "Szomoru Vasarnap"
+            },
+            {
+                "time": "1:06:10",
+                "artist": "שפיפו 3",
+                "track": "הכל נראה כמו יום ראשון"
+            },
+            {
+                "time": "1:18:42",
+                "artist": "Yaniv Schonfeld",
+                "track": "today is the same day as yesterday"
+            },
+            {
+                "time": "1:23:20",
+                "artist": "Guided By Voices",
+                "track": "Peep-Hole"
+            },
+            {
+                "time": "1:25:07",
+                "artist": "pulp",
+                "track": "boats and trains"
+            },
+            {
+                "time": "1:33:07",
+                "artist": "Microphones",
+                "track": "The moon"
+            },
+            {
+                "time": "1:41:45",
+                "artist": "chefifeau",
+                "track": "רכבת של אפס"
+            },
+            {
+                "time": "1:56:20",
+                "artist": "צוף זוהר ענבל",
+                "track": "פרחים"
+            },
+            {
+                "time": "2:00:47",
+                "artist": "Portishead",
+                "track": "The Rip"
+            }
+        ],
+        "description": "בתכנית הזאת אני מזמן את רוחות העבר ואת שפיפו לדבר , לשמוע וליהנות ממוסיקה עצמאית ושלו , ומוזיקה מהמזרח , והשילוב שלהם עם פאנק וגם בסוף התכנית נופל לנו לקצת השידור בקיצור כיף חיים",
+        "type": "embed",
+        "embed_url": "https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20260120-102213%2F",
+        "image_url": "https://thumbnailer.mixcloud.com/unsafe/600x600/profile/d/9/0/6/7db7-329b-40e9-b239-55b543808a3d",
+        "play_count": 0
+    },
+    {
         "id": "you-are-not-holy-shiri-shifman-2025-12-02",
         "title": "גם שירי ענת שיפמן לא קדושה",
         "series": "You Are Not Holy",

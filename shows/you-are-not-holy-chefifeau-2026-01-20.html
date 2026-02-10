@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLOOM // גם שפיפו לא קדוש</title>
+
+    <!-- SEO -->
+    <meta name="description" content="בתכנית הזאת אני מזמן את רוחות העבר ואת שפיפו לדבר , לשמוע וליהנות ממוסיקה עצמאית ושלו , ומוזיקה מהמזרח , והשילוב שלהם עם פאנק וגם בסוף התכנית נופל לנו לקצת השידור בקיצור כיף חיים">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://widget.mixcloud.com https://www.youtube.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://thumbnailer.mixcloud.com https://i.ytimg.com data:; frame-src https://player-widget.mixcloud.com https://www.youtube.com; media-src 'self' blob:; connect-src 'self' https://api.mixcloud.com;">
+    <meta name="author" content="Yaniv Schonfeld">
+
+    <!-- OpenGraph / Facebook -->
+    <meta property="og:type" content="music.song">
+    <meta property="og:url" content="https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-chefifeau-2026-01-20.html">
+    <meta property="og:title" content="גם שפיפו לא קדוש // KLOOM LO KADOSH">
+    <meta property="og:description" content="בתכנית הזאת אני מזמן את רוחות העבר ואת שפיפו לדבר , לשמוע וליהנות ממוסיקה עצמאית ושלו , ומוזיקה מהמזרח , והשילוב שלהם עם פאנק וגם בסוף התכנית נופל לנו לקצת השידור בקיצור כיף חיים">
+    <meta property="og:image" content="https://willbearfruits.github.io/kloom-radio/assets/og/you-are-not-holy-chefifeau-2026-01-20.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Kloom Lo Kadosh">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-chefifeau-2026-01-20.html">
+    <meta property="twitter:title" content="גם שפיפו לא קדוש // KLOOM LO KADOSH">
+    <meta property="twitter:description" content="בתכנית הזאת אני מזמן את רוחות העבר ואת שפיפו לדבר , לשמוע וליהנות ממוסיקה עצמאית ושלו , ומוזיקה מהמזרח , והשילוב שלהם עם פאנק וגם בסוף התכנית נופל לנו לקצת השידור בקיצור כיף חיים">
+    <meta property="twitter:image" content="https://willbearfruits.github.io/kloom-radio/assets/og/you-are-not-holy-chefifeau-2026-01-20.png">
+
+    <style>
+        body {
+            background-color: #0000ff; /* Blue Screen of Death Blue */
+            color: #ffff00;
+            font-family: 'Impact', sans-serif;
+            margin: 0;
+            padding: 10px;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 8vw;
+            line-height: 0.8;
+            margin: 0;
+            text-transform: uppercase;
+            mix-blend-mode: difference;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+            transform: rotate(-5deg);
+            white-space: nowrap;
+        }
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .nav a {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-weight: bold;
+            border: 2px solid #fff;
+        }
+        .nav a:hover {
+            background: #fff;
+            color: #000;
+        }
+        .container {
+            margin-top: 15vh;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 100px;
+        }
+        .box {
+            background: #ff00ff;
+            border: 5px solid #000;
+            padding: 30px;
+            box-shadow: 15px 15px 0px #000;
+            transform: skew(-2deg);
+        }
+        .box-header {
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 5px 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            margin-top: -55px;
+            margin-bottom: 20px;
+            transform: skew(2deg);
+        }
+        .show-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #000;
+            text-shadow: 2px 2px 0px #fff;
+        }
+        .metadata {
+            font-family: monospace;
+            background: #ffff00;
+            color: #000;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #000;
+            display: inline-block;
+        }
+        .tags span {
+            background: #000;
+            color: #fff;
+            padding: 2px 5px;
+            margin-right: 5px;
+            font-size: 0.8rem;
+        }
+        iframe {
+            border: 5px solid black;
+            background: #000;
+        }
+        .description {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            margin-top: 20px;
+            border: 2px dashed #00ff00;
+        }
+        .footer {
+            text-align: center;
+            font-family: monospace;
+            margin-top: 50px;
+            color: #fff;
+        }
+    </style>
+    <link rel="icon" href="../assets/favicon.svg">
+    <link rel="canonical" href="https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-chefifeau-2026-01-20.html">
+    <link rel="alternate" type="application/rss+xml" title="KLOOM LO KADOSH" href="../feed.xml">
+    <link rel="stylesheet" href="../assets/player.css">
+    <!-- Plausible Analytics – uncomment and set your domain -->
+    <!-- <script defer src="https://plausible.io/js/script.js" data-domain="kloom-radio"></script> -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "PodcastEpisode",
+        "name": "גם שפיפו לא קדוש",
+        "partOfSeries": {
+            "@type": "PodcastSeries",
+            "name": "You Are Not Holy",
+            "url": "https://willbearfruits.github.io/kloom-radio"
+        },
+        "datePublished": "2026-01-20",
+        "description": "בתכנית הזאת אני מזמן את רוחות העבר ואת שפיפו לדבר , לשמוע וליהנות ממוסיקה עצמאית ושלו , ומוזיקה מהמזרח , והשילוב שלהם עם פאנק וגם בסוף התכנית נופל לנו לקצת השידור בקיצור כיף חיים",
+        "url": "https://willbearfruits.github.io/kloom-radio/shows/you-are-not-holy-chefifeau-2026-01-20.html"
+    }
+    </script>
+</head>
+<body>
+    <!-- ── Persistent Player Bar ── -->
+<div id="kloom-player">
+  <div class="kp-bar">
+    <button class="kp-play-btn" id="kp-play-btn" onclick="KloomPlayer.togglePlay()">▶</button>
+    <div class="kp-info">
+      <div class="kp-title" id="kp-title">—</div>
+      <div class="kp-meta"  id="kp-meta">—</div>
+    </div>
+    <div class="kp-mid" id="kp-mid"></div>
+    <button class="kp-close-btn" onclick="KloomPlayer.close()">✕</button>
+  </div>
+</div>
+
+    <h1>NOTHING<br>IS HOLY</h1>
+
+    <div class="nav">
+        <a href="../">/// BACK_TO_ARCHIVE</a>
+    </div>
+    
+    <div class="container">
+        <div class="box">
+            <div class="box-header">// You Are Not Holy // you-are-not-holy-chefifeau-2026-01-20</div>
+            
+            <div class="show-title">גם שפיפו לא קדוש</div>
+            
+            <div class="metadata">
+                DATE: 2026-01-20<br>
+                
+                GUEST: chefifeau<br>
+                
+                <div style="margin-top: 5px;">
+                    GENRES: Rock, Punk, Mediterranean, Indie folk, Freak folk
+                </div>
+                
+                <div class="tags" style="margin-top: 10px;">
+                    <span>#Live</span><span>#Guest Show</span><span>#Rock</span><span>#Punk</span><span>#Mediterranean</span>
+                </div>
+            </div>
+
+            
+            <iframe width="100%" height="120" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&feed=%2FNOTHINGISHOLY%2Fthe-creative-destruction-show-live-20260120-102213%2F" frameborder="0" allow="encrypted-media; fullscreen; autoplay; idle-detection; speaker-selection; web-share;"></iframe>
+            
+
+            
+            <div class="description">
+                בתכנית הזאת אני מזמן את רוחות העבר ואת שפיפו לדבר , לשמוע וליהנות ממוסיקה עצמאית ושלו , ומוזיקה מהמזרח , והשילוב שלהם עם פאנק וגם בסוף התכנית נופל לנו לקצת השידור בקיצור כיף חיים
+            </div>
+            
+            
+            
+            <div class="description" style="margin-top: 30px; border-color: #ffff00; color: #fff;">
+                <div style="background: #ffff00; color: #000; display: inline-block; padding: 2px 5px; margin-bottom: 10px; font-weight: bold;">// TRACKLIST</div>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ffff00;">
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">#</th>
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">TIME</th>
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">ARTIST</th>
+                            <th style="text-align: left; padding: 5px; color: #00ff00;">TRACK</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">1</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">00:00</td>
+                            <td style="padding: 5px;">Xerox candy bar</td>
+                            <td style="padding: 5px; color: #fff;">Fire walk with me</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">2</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">12:42</td>
+                            <td style="padding: 5px;">Scout Niblett</td>
+                            <td style="padding: 5px; color: #fff;">Lucy Lucifer</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">3</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">15:22</td>
+                            <td style="padding: 5px;">Junkyard Kids</td>
+                            <td style="padding: 5px; color: #fff;">Junkyard Dream</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">4</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">20:37</td>
+                            <td style="padding: 5px;">manic street preacher</td>
+                            <td style="padding: 5px; color: #fff;">still snowing in saporo</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">5</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">32:48</td>
+                            <td style="padding: 5px;">משה כהן</td>
+                            <td style="padding: 5px; color: #fff;">נדרתי נדר</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">6</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">47:45</td>
+                            <td style="padding: 5px;">ferdi tayfur</td>
+                            <td style="padding: 5px; color: #fff;">sanmaki yasiyorum</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">7</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">55:34</td>
+                            <td style="padding: 5px;">Pal Kalmar & Miklos Sebo</td>
+                            <td style="padding: 5px; color: #fff;">Szomoru Vasarnap</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">8</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:06:10</td>
+                            <td style="padding: 5px;">שפיפו 3</td>
+                            <td style="padding: 5px; color: #fff;">הכל נראה כמו יום ראשון</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">9</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:18:42</td>
+                            <td style="padding: 5px;">Yaniv Schonfeld</td>
+                            <td style="padding: 5px; color: #fff;">today is the same day as yesterday</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">10</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:23:20</td>
+                            <td style="padding: 5px;">Guided By Voices</td>
+                            <td style="padding: 5px; color: #fff;">Peep-Hole</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">11</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:25:07</td>
+                            <td style="padding: 5px;">pulp</td>
+                            <td style="padding: 5px; color: #fff;">boats and trains</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">12</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:33:07</td>
+                            <td style="padding: 5px;">Microphones</td>
+                            <td style="padding: 5px; color: #fff;">The moon</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">13</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:41:45</td>
+                            <td style="padding: 5px;">chefifeau</td>
+                            <td style="padding: 5px; color: #fff;">רכבת של אפס</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">14</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">1:56:20</td>
+                            <td style="padding: 5px;">צוף זוהר ענבל</td>
+                            <td style="padding: 5px; color: #fff;">פרחים</td>
+                        </tr>
+                        
+                        <tr style="border-bottom: 1px solid #444;">
+                            <td style="padding: 5px; color: #ffff00;">15</td>
+                            <td style="padding: 5px; color: #ff00ff; font-weight: bold;">2:00:47</td>
+                            <td style="padding: 5px;">Portishead</td>
+                            <td style="padding: 5px; color: #fff;">The Rip</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <a href="../">ARCHIVE</a>
+        <a href="../about.html">ABOUT</a>
+        <a href="../contact.html">CONTACT</a>
+        <a href="../feed.xml">RSS</a>
+    </div>
+
+    <div class="footer">
+        KLOOM LO KADOSH RADIO ARCHIVE // GENERATED 2026-02-10 19:52:09
+    </div>
+
+    <script src="../assets/player.js"></script>
+    <script>KloomPlayer.restore();</script>
+</body>
+</html>
