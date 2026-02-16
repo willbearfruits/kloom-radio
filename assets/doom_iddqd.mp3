@@ -1,9 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html><head>
-<title>404 Not Found</title>
-</head><body>
-<h1>Not Found</h1>
-<p>The requested URL was not found on this server.</p>
-<hr>
-<address>Apache/2.4.52 (Ubuntu) Server at www.myinstants.com Port 443</address>
-</body></html>
+version https://git-lfs.github.com/spec/v1
+oid sha256:004d9f8d5fbd17b79a3a5f8bf2a3b2d3f24d72ac27faab6b3694ec3c93442ca1
+size 281
