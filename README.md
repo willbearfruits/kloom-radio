@@ -9,6 +9,14 @@
 
 ---
 
+## Support
+
+Most of the archive and tooling stays free and open-source.
+Support early access, live sessions, and infrastructure:
+https://www.patreon.com/Seriousshit
+
+---
+
 ## About
 
 Kloom Lo Kadosh (Nothing Is Holy) is a radio project hosted by Yaniv Schonfeld. This repository serves as the static archive for past broadcasts, mixtapes, experimental audio works, and visual content.
